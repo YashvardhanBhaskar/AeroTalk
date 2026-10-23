@@ -4,14 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aerotalk</title>
+  
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
   <style>
     :root {
       --aero-blue: #0078d7;
       --aero-glass-bg: rgba(255, 255, 255, 0.45);
-      --aero-glass-card: rgba(255, 255, 255, 0.68);
+      --aero-glass-card: rgba(255, 255, 255, 0.70);
       --aero-border: rgba(255, 255, 255, 0.85);
       --aero-shadow: 0 8px 32px 0 rgba(0, 48, 115, 0.3);
       --aero-text: #132b40;
@@ -24,7 +26,7 @@
       font-family: "Segoe UI", "Tahoma", "Lucida Grande", sans-serif;
     }
 
-    /* 2012 Frutiger Aero Wallpaper */
+    /* 2012 Frutiger Aero Aurora Wallpaper */
     body {
       min-height: 100vh;
       background: radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.75) 0%, transparent 25%),
@@ -35,7 +37,7 @@
       padding-bottom: 60px;
     }
 
-    /* Glossy Aero Surface */
+    /* Aero Glass Surface */
     .glass-panel {
       background: var(--aero-glass-bg);
       backdrop-filter: blur(16px);
@@ -53,19 +55,19 @@
       left: 0;
       right: 0;
       height: 42%;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.03) 100%);
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.03) 100%);
       border-radius: 12px 12px 0 0;
       pointer-events: none;
     }
 
-    /* Header / Nav */
+    /* Header */
     header {
       position: sticky;
       top: 0;
       z-index: 100;
-      margin-bottom: 25px;
-      padding: 12px 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(210, 240, 255, 0.45) 100%);
+      margin-bottom: 22px;
+      padding: 10px 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(210, 240, 255, 0.48) 100%);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.85);
@@ -83,24 +85,45 @@
       gap: 12px;
     }
 
-    .logo {
-      font-size: 26px;
-      font-weight: 800;
-      font-style: italic;
-      color: #0b4575;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.8);
+    .logo-container {
       display: flex;
       align-items: center;
       gap: 10px;
       user-select: none;
     }
 
+    /* Circular Aero Orb with Custom AT Logo */
     .logo-orb {
-      width: 28px;
-      height: 28px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #ffffff 0%, #5ce5ff 40%, #006eb8 90%);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px #fff;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 70, 150, 0.4), inset 0 1px 2px #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #00a4e8;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .logo-orb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .logo-text {
+      font-size: 25px;
+      font-weight: 800;
+      font-style: italic;
+      color: #0b4575;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .status-badge {
@@ -109,9 +132,10 @@
       border-radius: 12px;
       font-style: normal;
       font-weight: 700;
-      background: rgba(255, 255, 255, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      color: #0e5a2f;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      color: #0d4e82;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     }
 
     .user-bar {
@@ -128,7 +152,7 @@
       background: linear-gradient(to bottom, #ffffff 0%, #e0efff 48%, #b5d9fc 52%, #85beff 100%);
       border: 1px solid #5296d4;
       border-radius: 18px;
-      padding: 6px 16px;
+      padding: 6px 15px;
       color: #0b3760;
       font-weight: 700;
       font-size: 13px;
@@ -140,6 +164,7 @@
       align-items: center;
       justify-content: center;
       gap: 5px;
+      text-decoration: none;
     }
 
     .btn-aero:hover {
@@ -166,15 +191,16 @@
       padding: 0 15px;
     }
 
-    .setup-warning {
-      background: rgba(255, 245, 200, 0.9);
+    .info-banner {
+      background: rgba(255, 245, 200, 0.92);
       border: 2px solid #e6a800;
       border-radius: 10px;
-      padding: 14px 18px;
+      padding: 12px 16px;
       margin-bottom: 20px;
       font-size: 13px;
       color: #5c4300;
       display: none;
+      line-height: 1.4;
     }
 
     /* Post Composer */
@@ -200,7 +226,7 @@
       padding: 10px 14px;
       border-radius: 8px;
       border: 1px solid #7eaacb;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.95);
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
       font-size: 14px;
       outline: none;
@@ -236,29 +262,30 @@
       font-size: 12px;
       font-weight: 700;
       color: #15456f;
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.7);
       padding: 5px 12px;
       border-radius: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.9);
       cursor: pointer;
+      user-select: none;
     }
 
     .emoji-tray {
       display: flex;
-      gap: 3px;
-      background: rgba(255, 255, 255, 0.7);
-      padding: 4px 8px;
+      gap: 2px;
+      background: rgba(255, 255, 255, 0.75);
+      padding: 3px 6px;
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.9);
     }
 
     .emoji-btn {
       background: none;
       border: none;
-      font-size: 16px;
+      font-size: 17px;
       cursor: pointer;
       border-radius: 4px;
-      padding: 2px 4px;
+      padding: 2px 5px;
       transition: transform 0.1s;
     }
 
@@ -366,7 +393,7 @@
       padding: 2px 8px;
       border-radius: 10px;
       background: rgba(120, 140, 160, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.85);
       color: #334e68;
       font-weight: normal;
     }
@@ -405,10 +432,10 @@
     }
 
     .action-btn {
-      background: rgba(255, 255, 255, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.9);
       border-radius: 15px;
-      padding: 5px 12px;
+      padding: 5px 13px;
       font-size: 13px;
       font-weight: 700;
       color: #124b79;
@@ -441,7 +468,7 @@
     }
 
     .comment-item {
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.7);
       padding: 8px 12px;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.9);
@@ -464,7 +491,7 @@
       padding: 6px 12px;
       border-radius: 15px;
       border: 1px solid #7eaacb;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       font-size: 13px;
       outline: none;
     }
@@ -607,20 +634,41 @@
   <!-- Header -->
   <header>
     <div class="nav-container">
-      <div class="logo">
-        <span class="logo-orb"></span>
-        Aerotalk
-        <span class="status-badge" id="connectionBadge">Connecting...</span>
+      <div class="logo-container">
+        <!-- Aero Orb with AT Logo -->
+        <div class="logo-orb">
+          <!-- Uses logo.png if present in repo, otherwise renders high-res built-in SVG reproduction -->
+          <img id="logoImg" src="logo.png" alt="AT Logo" onerror="this.style.display='none'; document.getElementById('logoSvg').style.display='block';">
+          <svg id="logoSvg" viewBox="0 0 100 100" style="display: none; width: 100%; height: 100%;">
+            <!-- Cyan orb base -->
+            <circle cx="50" cy="50" r="48" fill="#00a8ec" />
+            <!-- Painterly brush border accents -->
+            <path d="M 24 24 C 33 13, 52 11, 68 13 C 50 15, 32 21, 23 35 Z" fill="#60e1d8" opacity="0.85"/>
+            <path d="M 18 36 C 14 50, 15 64, 23 74 C 18 62, 17 48, 22 36 Z" fill="#44c8ba" opacity="0.75"/>
+            <path d="M 50 87 C 68 86, 81 78, 88 66 C 84 79, 68 88, 50 87 Z" fill="#2951d3" opacity="0.9"/>
+            <path d="M 78 72 C 86 60, 88 44, 85 32 C 89 46, 87 62, 78 74 Z" fill="#3864e0" opacity="0.8"/>
+            <!-- Calligraphic cursive AT -->
+            <text x="49" y="64" font-family="'Brush Script MT', 'Segoe Script', 'Great Vibes', 'Comic Sans MS', cursive" font-size="44" font-weight="bold" fill="#d9d2fa" stroke="#9e8ee8" stroke-width="0.8" text-anchor="middle" font-style="italic">AT</text>
+          </svg>
+        </div>
+        <div class="logo-text">
+          Aerotalk
+          <span class="status-badge" id="connectionBadge">Starting...</span>
+        </div>
       </div>
-      <div class="user-bar" id="userBar"></div>
+
+      <!-- User bar: populated immediately on boot -->
+      <div class="user-bar" id="userBar">
+        <span>Browsing as Guest (Anonymous)</span>
+        <button class="btn-aero" onclick="openAuthModal('login')">Sign In</button>
+        <button class="btn-aero" onclick="openAuthModal('register')">Create Account</button>
+      </div>
     </div>
   </header>
 
   <main class="container">
-    <!-- Setup Reminder if Firebase Config is not pasted yet -->
-    <div class="setup-warning" id="setupWarning">
-      <strong>⚠️ Firebase Not Connected Yet:</strong> Open <code>index.html</code> and paste your <code>firebaseConfig</code> keys from the Firebase Console so your posts sync globally with friends!
-    </div>
+    <!-- Informational Alert Banner -->
+    <div class="info-banner" id="setupWarning"></div>
 
     <!-- Composer -->
     <section class="glass-panel composer">
@@ -634,18 +682,18 @@
 
       <div class="composer-toolbar">
         <div class="composer-actions">
-          <label class="btn-aero">
+          <label class="btn-aero" style="cursor: pointer;">
             📷 Add Photo
             <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelected(event)">
           </label>
 
           <div class="emoji-tray">
-            <button class="emoji-btn" onclick="insertEmoji('😀')">😀</button>
-            <button class="emoji-btn" onclick="insertEmoji('✨')">✨</button>
-            <button class="emoji-btn" onclick="insertEmoji('🎧')">🎧</button>
-            <button class="emoji-btn" onclick="insertEmoji('💙')">💙</button>
-            <button class="emoji-btn" onclick="insertEmoji('🌟')">🌟</button>
-            <button class="emoji-btn" onclick="insertEmoji('🎮')">🎮</button>
+            <button class="emoji-btn" type="button" onclick="insertEmoji('😀')">😀</button>
+            <button class="emoji-btn" type="button" onclick="insertEmoji('✨')">✨</button>
+            <button class="emoji-btn" type="button" onclick="insertEmoji('🎧')">🎧</button>
+            <button class="emoji-btn" type="button" onclick="insertEmoji('💙')">💙</button>
+            <button class="emoji-btn" type="button" onclick="insertEmoji('🌟')">🌟</button>
+            <button class="emoji-btn" type="button" onclick="insertEmoji('🎮')">🎮</button>
           </div>
 
           <label class="checkbox-container">
@@ -654,14 +702,18 @@
           </label>
         </div>
 
-        <button class="btn-aero" id="publishBtn" onclick="submitPost()">
+        <button class="btn-aero" id="publishBtn" type="button" onclick="submitPost()">
           ✦ Publish Post
         </button>
       </div>
     </section>
 
-    <!-- Post list: Newest at top, oldest at bottom -->
-    <section class="feed" id="feedContainer"></section>
+    <!-- Post Feed: Newest at top, oldest at bottom -->
+    <section class="feed" id="feedContainer">
+      <div class="glass-panel post-card" style="text-align: center; color: #1e4569;">
+        Loading feed...
+      </div>
+    </section>
   </main>
 
   <!-- Login/Register Modal -->
@@ -696,7 +748,7 @@
     </div>
   </div>
 
-  <!-- Registration Success / Code Modal -->
+  <!-- Registration Secret Recovery Code Modal -->
   <div class="modal-overlay" id="codeModal">
     <div class="modal-window">
       <div class="modal-titlebar">
@@ -758,7 +810,7 @@
   </div>
 
   <script>
-// Import the functions you need from the SDKs you need
+  // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -780,30 +832,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-    const isFirebaseConfigured = firebaseConfig.apiKey && firebaseConfig.apiKey !== "PASTE_YOUR_API_KEY";
-    let db = null;
-
-    if (isFirebaseConfigured) {
-      try {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
-        document.getElementById("connectionBadge").innerText = "🌐 Live Cloud";
-      } catch (err) {
-        console.error("Firebase init error:", err);
-      }
-    } else {
-      document.getElementById("connectionBadge").innerText = "💻 Local Demo Mode";
-      document.getElementById("setupWarning").style.display = "block";
-    }
-
-    // Local Session & Guest ID Storage
+    // Memory storage fallback
     const memStore = {};
     function getItem(k) { try { return localStorage.getItem(k); } catch(e) { return memStore[k] || null; } }
     function setItem(k, v) { try { localStorage.setItem(k, v); } catch(e) { memStore[k] = v; } }
     function removeItem(k) { try { localStorage.removeItem(k); } catch(e) { delete memStore[k]; } }
 
-    const STORAGE_KEY_SESSION = "aerotalk_active_user_cloud";
-    const STORAGE_KEY_ANON_ID = "aerotalk_anon_id_cloud";
+    const STORAGE_KEY_SESSION = "aerotalk_active_user";
+    const STORAGE_KEY_ANON_ID = "aerotalk_anon_id";
+    const STORAGE_KEY_LOCAL_POSTS = "aerotalk_local_posts";
+    const STORAGE_KEY_LOCAL_USERS = "aerotalk_local_users";
 
     let anonGuestId = getItem(STORAGE_KEY_ANON_ID);
     if (!anonGuestId) {
@@ -816,11 +854,39 @@ const analytics = getAnalytics(app);
     let pendingPostImage = null;
     let pendingAvatarImage = null;
 
-    // Live State Cache
     let livePosts = [];
     let liveUsers = {};
+    let db = null;
 
-    // Compress images so they fit easily inside Firestore documents without paid storage
+    // --- Core Helper Functions ---
+    window.insertEmoji = function(emoji) {
+      const el = document.getElementById("postText");
+      if (!el) return;
+      el.value += emoji;
+      el.focus();
+    };
+
+    function escapeHTML(str) {
+      if (!str) return "";
+      return String(str).replace(/[&<>'"]/g, t => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[t] || t));
+    }
+
+    function formatTime(timestamp) {
+      const diffSecs = Math.floor((Date.now() - (timestamp || Date.now())) / 1000);
+      if (diffSecs < 60) return "Just now";
+      const diffMins = Math.floor(diffSecs / 60);
+      if (diffMins < 60) return diffMins + "m ago";
+      const diffHours = Math.floor(diffMins / 60);
+      if (diffHours < 24) return diffHours + "h ago";
+      return new Date(timestamp).toLocaleDateString();
+    }
+
+    function getViewerId() {
+      return currentUser ? ("u:" + currentUser) : ("anon:" + anonGuestId);
+    }
+
     function compressImage(file, maxWidth, quality, callback) {
       const reader = new FileReader();
       reader.onload = function(event) {
@@ -844,57 +910,11 @@ const analytics = getAnalytics(app);
       reader.readAsDataURL(file);
     }
 
-    function escapeHTML(str) {
-      if (!str) return "";
-      return String(str).replace(/[&<>'"]/g, t => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-      }[t] || t));
-    }
-
-    function formatTime(timestamp) {
-      const diffSecs = Math.floor((Date.now() - timestamp) / 1000);
-      if (diffSecs < 60) return "Just now";
-      const diffMins = Math.floor(diffSecs / 60);
-      if (diffMins < 60) return diffMins + "m ago";
-      const diffHours = Math.floor(diffMins / 60);
-      if (diffHours < 24) return diffHours + "h ago";
-      return new Date(timestamp).toLocaleDateString();
-    }
-
-    function getViewerId() {
-      return currentUser ? ("u:" + currentUser) : ("anon:" + anonGuestId);
-    }
-
-    // --- Real-Time Listeners ---
-    function startRealtimeSync() {
-      if (db) {
-        // Listen to users collection
-        db.collection("users").onSnapshot(snapshot => {
-          snapshot.forEach(doc => {
-            liveUsers[doc.id] = doc.data();
-          });
-          renderFeed();
-        });
-
-        // Listen to posts collection (newest at top, oldest at bottom)
-        db.collection("posts").orderBy("timestamp", "desc").onSnapshot(snapshot => {
-          livePosts = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }));
-          renderFeed();
-        });
-      } else {
-        // Fallback local demo data until Firebase config is pasted
-        livePosts = JSON.parse(getItem("aerotalk_fallback_posts") || "[]");
-        liveUsers = JSON.parse(getItem("aerotalk_fallback_users") || "{}");
-        renderFeed();
-      }
-    }
-
     // --- Render Navigation ---
-    function renderUserBar() {
+    window.renderUserBar = function() {
       const userBar = document.getElementById("userBar");
+      if (!userBar) return;
+
       if (currentUser) {
         userBar.innerHTML = `
           <span>Signed in as <strong>${escapeHTML(currentUser)}</strong></span>
@@ -908,18 +928,21 @@ const analytics = getAnalytics(app);
           <button class="btn-aero" onclick="openAuthModal('register')">Create Account</button>
         `;
       }
-    }
+    };
 
     // --- Render Feed ---
-    function renderFeed() {
+    window.renderFeed = function() {
       const feedContainer = document.getElementById("feedContainer");
+      if (!feedContainer) return;
+
       const viewerId = getViewerId();
-      const sorted = [...livePosts].sort((a, b) => b.timestamp - a.timestamp);
+      // Ensure oldest is at bottom, newest is at top
+      const sorted = [...livePosts].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
       if (sorted.length === 0) {
         feedContainer.innerHTML = `
           <div class="glass-panel post-card" style="text-align: center; color: #1e4569;">
-            No posts yet! Write the very first post on Aerotalk above.
+            No posts yet! Be the first to publish a post above.
           </div>`;
         return;
       }
@@ -990,10 +1013,10 @@ const analytics = getAnalytics(app);
           </article>
         `;
       }).join("");
-    }
+    };
 
-    // --- Likes (Works for Anonymous Guests & Logged-In Users) ---
-    async function toggleLike(postId) {
+    // --- Likes ---
+    window.toggleLike = async function(postId) {
       const viewerId = getViewerId();
       const post = livePosts.find(p => String(p.id) === String(postId));
       if (!post) return;
@@ -1007,22 +1030,20 @@ const analytics = getAnalytics(app);
       }
 
       if (db) {
-        await db.collection("posts").doc(String(postId)).update({ likes: updatedLikes });
+        try {
+          await db.collection("posts").doc(String(postId)).update({ likes: updatedLikes });
+        } catch(err) {
+          console.warn("Could not sync like to cloud:", err);
+        }
       } else {
         post.likes = updatedLikes;
-        setItem("aerotalk_fallback_posts", JSON.stringify(livePosts));
+        setItem(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(livePosts));
         renderFeed();
       }
-    }
+    };
 
-    // --- Post Composition ---
-    function insertEmoji(emoji) {
-      const textarea = document.getElementById("postText");
-      textarea.value += emoji;
-      textarea.focus();
-    }
-
-    function handleImageSelected(event) {
+    // --- Post Attachment Handling ---
+    window.handleImageSelected = function(event) {
       const file = event.target.files[0];
       if (!file) return;
       compressImage(file, 700, 0.72, function(compressedDataUrl) {
@@ -1030,21 +1051,23 @@ const analytics = getAnalytics(app);
         document.getElementById("imgPreview").src = pendingPostImage;
         document.getElementById("imgPreviewWrapper").style.display = "inline-block";
       });
-    }
+    };
 
-    function clearImageAttachment() {
+    window.clearImageAttachment = function() {
       pendingPostImage = null;
       document.getElementById("imageInput").value = "";
       document.getElementById("imgPreview").src = "";
       document.getElementById("imgPreviewWrapper").style.display = "none";
-    }
+    };
 
-    async function submitPost() {
-      const text = document.getElementById("postText").value.trim();
+    // --- Publishing Posts ---
+    window.submitPost = async function() {
+      const textEl = document.getElementById("postText");
+      const text = textEl ? textEl.value.trim() : "";
       const isAnon = document.getElementById("anonCheck").checked;
 
       if (!text && !pendingPostImage) {
-        alert("Please enter text or attach an image.");
+        alert("Please write some text or attach an image before posting.");
         return;
       }
 
@@ -1061,30 +1084,32 @@ const analytics = getAnalytics(app);
 
       const btn = document.getElementById("publishBtn");
       btn.disabled = true;
+      btn.innerText = "Publishing...";
 
       try {
         if (db) {
           await db.collection("posts").add(newPost);
         } else {
-          newPost.id = String(Date.now());
-          livePosts.push(newPost);
-          setItem("aerotalk_fallback_posts", JSON.stringify(livePosts));
+          newPost.id = "local_" + Date.now();
+          livePosts.unshift(newPost);
+          setItem(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(livePosts));
           renderFeed();
         }
-        document.getElementById("postText").value = "";
+        textEl.value = "";
         document.getElementById("anonCheck").checked = false;
         clearImageAttachment();
       } catch (err) {
-        alert("Error publishing post: " + err.message);
+        alert("Failed to publish: " + err.message);
       } finally {
         btn.disabled = false;
+        btn.innerText = "✦ Publish Post";
       }
-    }
+    };
 
-    // --- Comments ---
-    async function submitComment(postId) {
+    // --- Comment Submission ---
+    window.submitComment = async function(postId) {
       const input = document.getElementById(`comment-input-${postId}`);
-      const text = input.value.trim();
+      const text = input ? input.value.trim() : "";
       if (!text) return;
 
       const author = currentUser ? currentUser : "Anonymous";
@@ -1096,40 +1121,44 @@ const analytics = getAnalytics(app);
       input.value = "";
 
       if (db) {
-        await db.collection("posts").doc(String(postId)).update({ comments: updatedComments });
+        try {
+          await db.collection("posts").doc(String(postId)).update({ comments: updatedComments });
+        } catch(err) {
+          console.warn("Could not save comment to cloud:", err);
+        }
       } else {
         post.comments = updatedComments;
-        setItem("aerotalk_fallback_posts", JSON.stringify(livePosts));
+        setItem(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(livePosts));
         renderFeed();
       }
-    }
+    };
 
-    // --- Auth & Account Creation with Secret Recovery Code ---
-    function openAuthModal(mode) {
+    // --- Authentication Modals & Logic ---
+    window.openAuthModal = function(mode) {
       switchAuthMode(mode);
       document.getElementById("authModal").classList.add("open");
       document.getElementById("authUsername").focus();
-    }
+    };
 
-    function closeAuthModal() {
+    window.closeAuthModal = function() {
       document.getElementById("authModal").classList.remove("open");
       document.getElementById("authUsername").value = "";
       document.getElementById("authPassword").value = "";
-    }
+    };
 
-    function switchAuthMode(mode) {
+    window.switchAuthMode = function(mode) {
       authMode = mode;
       document.getElementById("modalTitle").innerText = mode === "login" ? "Log In to Aerotalk" : "Create an Account";
       document.getElementById("authSubmitBtn").innerText = mode === "login" ? "Log In" : "Register";
       document.getElementById("loginTabBtn").classList.toggle("active", mode === "login");
       document.getElementById("regTabBtn").classList.toggle("active", mode === "register");
-    }
+    };
 
     function generateRecoveryCode() {
       return "AERO-" + Math.floor(1000 + Math.random() * 9000);
     }
 
-    async function handleAuthSubmit() {
+    window.handleAuthSubmit = async function() {
       const user = document.getElementById("authUsername").value.trim();
       const pass = document.getElementById("authPassword").value.trim();
 
@@ -1152,11 +1181,15 @@ const analytics = getAnalytics(app);
         };
 
         if (db) {
-          await db.collection("users").doc(user).set(newUserObj);
-        } else {
-          liveUsers[user] = newUserObj;
-          setItem("aerotalk_fallback_users", JSON.stringify(liveUsers));
+          try {
+            await db.collection("users").doc(user).set(newUserObj);
+          } catch(err) {
+            alert("Error saving account to cloud: " + err.message);
+            return;
+          }
         }
+        liveUsers[user] = newUserObj;
+        setItem(STORAGE_KEY_LOCAL_USERS, JSON.stringify(liveUsers));
 
         currentUser = user;
         setItem(STORAGE_KEY_SESSION, currentUser);
@@ -1178,21 +1211,21 @@ const analytics = getAnalytics(app);
         renderUserBar();
         renderFeed();
       }
-    }
+    };
 
-    function closeCodeModal() {
+    window.closeCodeModal = function() {
       document.getElementById("codeModal").classList.remove("open");
-    }
+    };
 
-    function logout() {
+    window.logout = function() {
       currentUser = null;
       removeItem(STORAGE_KEY_SESSION);
       renderUserBar();
       renderFeed();
-    }
+    };
 
     // --- Customize Account Modal (Profile Picture & Password ONLY) ---
-    function openCustomizeModal() {
+    window.openCustomizeModal = function() {
       if (!currentUser) return;
       const userObj = liveUsers[currentUser] || {};
       pendingAvatarImage = userObj.avatar || null;
@@ -1201,11 +1234,11 @@ const analytics = getAnalytics(app);
       document.getElementById("custRecoveryCode").value = "";
       document.getElementById("custNewPassword").value = "";
       document.getElementById("customizeModal").classList.add("open");
-    }
+    };
 
-    function closeCustomizeModal() {
+    window.closeCustomizeModal = function() {
       document.getElementById("customizeModal").classList.remove("open");
-    }
+    };
 
     function updateAvatarPreview() {
       const preview = document.getElementById("customAvatarPreview");
@@ -1216,16 +1249,16 @@ const analytics = getAnalytics(app);
       }
     }
 
-    function handleAvatarSelected(event) {
+    window.handleAvatarSelected = function(event) {
       const file = event.target.files[0];
       if (!file) return;
       compressImage(file, 160, 0.75, function(compressedAvatar) {
         pendingAvatarImage = compressedAvatar;
         updateAvatarPreview();
       });
-    }
+    };
 
-    async function saveAccountCustomizations() {
+    window.saveAccountCustomizations = async function() {
       if (!currentUser) return;
       const userObj = liveUsers[currentUser];
       if (!userObj) return;
@@ -1240,7 +1273,7 @@ const analytics = getAnalytics(app);
           alert("You must enter your Secret Recovery Code to change your password!");
           return;
         }
-        if (codeInput !== userObj.recoveryCode.toUpperCase()) {
+        if (codeInput !== String(userObj.recoveryCode).toUpperCase()) {
           alert("Incorrect Secret Recovery Code. Password change rejected.");
           return;
         }
@@ -1248,20 +1281,113 @@ const analytics = getAnalytics(app);
       }
 
       if (db) {
-        await db.collection("users").doc(currentUser).update(updates);
-      } else {
-        Object.assign(liveUsers[currentUser], updates);
-        setItem("aerotalk_fallback_users", JSON.stringify(liveUsers));
-        renderFeed();
+        try {
+          await db.collection("users").doc(currentUser).update(updates);
+        } catch(err) {
+          console.warn("Could not save avatar/password to cloud:", err);
+        }
       }
+      Object.assign(liveUsers[currentUser], updates);
+      setItem(STORAGE_KEY_LOCAL_USERS, JSON.stringify(liveUsers));
 
       alert("Account updated successfully!");
       closeCustomizeModal();
+      renderFeed();
+    };
+
+    // --- Guaranteed Startup Routine ---
+    function initializeApp() {
+      // 1. Immediately render UI and stored posts so buttons ALWAYS work
+      renderUserBar();
+
+      try {
+        livePosts = JSON.parse(getItem(STORAGE_KEY_LOCAL_POSTS) || "[]");
+        liveUsers = JSON.parse(getItem(STORAGE_KEY_LOCAL_USERS) || "{}");
+      } catch(e) {
+        livePosts = [];
+        liveUsers = {};
+      }
+      renderFeed();
+
+      // 2. Validate Firebase credentials
+      const badge = document.getElementById("connectionBadge");
+      const warning = document.getElementById("setupWarning");
+
+      const isConfigFilled = firebaseConfig.apiKey && 
+                             firebaseConfig.apiKey !== "PASTE_YOUR_API_KEY" && 
+                             firebaseConfig.projectId !== "PASTE_YOUR_PROJECT_ID";
+
+      if (!isConfigFilled) {
+        badge.innerText = "💻 Local Demo Mode";
+        warning.innerHTML = `<strong>⚠️ Firebase Keys Needed:</strong> Open <code>index.html</code>, look for <code>const firebaseConfig</code> near line 490, and paste your real Firebase keys so your posts sync with your friends.`;
+        warning.style.display = "block";
+        return;
+      }
+
+      if (typeof firebase === "undefined") {
+        badge.innerText = "⚠️ Offline Mode";
+        warning.innerHTML = `<strong>⚠️ Firebase Script Blocked:</strong> Could not load Firebase from Google's CDN. If you have an AdBlocker or Brave Shields active, disable them for this tab and refresh.`;
+        warning.style.display = "block";
+        return;
+      }
+
+      // 3. Connect to Cloud Firestore with full error protection
+      try {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.firestore();
+
+        // Listen to cloud users
+        db.collection("users").onSnapshot(
+          snapshot => {
+            snapshot.forEach(doc => {
+              liveUsers[doc.id] = doc.data();
+            });
+            setItem(STORAGE_KEY_LOCAL_USERS, JSON.stringify(liveUsers));
+            renderFeed();
+          },
+          err => {
+            console.warn("Users cloud listener notice:", err);
+          }
+        );
+
+        // Listen to cloud posts
+        db.collection("posts").onSnapshot(
+          snapshot => {
+            badge.innerText = "🌐 Live Cloud";
+            warning.style.display = "none";
+            livePosts = snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+            setItem(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(livePosts));
+            renderFeed();
+          },
+          err => {
+            console.error("Firestore Error:", err);
+            if (err.code === "permission-denied") {
+              badge.innerText = "⚠️ Rules Blocked";
+              warning.innerHTML = `<strong>⚠️ Firestore Security Rules Issue:</strong> Go to your <a href="https://console.firebase.google.com/" target="_blank" style="color: #0b4575; font-weight: bold;">Firebase Console</a> ➔ <strong>Firestore Database</strong> ➔ <strong>Rules</strong> tab, change the rules to <code>allow read, write: if true;</code>, and click <strong>Publish</strong>.`;
+              warning.style.display = "block";
+            } else {
+              badge.innerText = "⚠️ Cloud Error";
+              warning.innerHTML = `<strong>Firebase Notice:</strong> ${err.message}`;
+              warning.style.display = "block";
+            }
+          }
+        );
+
+      } catch (err) {
+        console.error("Initialization error:", err);
+        badge.innerText = "⚠️ Config Error";
+        warning.innerHTML = `<strong>Firebase Init Error:</strong> ${err.message}. Please check your <code>firebaseConfig</code> keys in <code>index.html</code>.`;
+        warning.style.display = "block";
+      }
     }
 
-    // Initialize App
-    renderUserBar();
-    startRealtimeSync();
+    // Run immediately
+    initializeApp();
   </script>
 </body>
 </html>
