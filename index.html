@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aerotalk</title>
+  <style>
+    :root {
+      --aero-blue: #0078d7;
+      --aero-sky: #60c5ff;
+      --aero-glass-bg: rgba(255, 255, 255, 0.45);
+      --aero-glass-card: rgba(255, 255, 255, 0.68);
+      --aero-border: rgba(255, 255, 255, 0.85);
+      --aero-shadow: 0 8px 32px 0 rgba(0, 48, 115, 0.3);
+      --aero-text: #132b40;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Tahoma", "Lucida Grande", sans-serif;
+    }
+
+    /* 2012 Frutiger Aero Wallpaper */
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.75) 0%, transparent 25%),
+                  radial-gradient(circle at 82% 28%, rgba(135, 240, 255, 0.6) 0%, transparent 40%),
+                  linear-gradient(135deg, #1875cd 0%, #37bfe7 35%, #6cd195 75%, #a0eb64 100%);
+      background-attachment: fixed;
+      color: var(--aero-text);
+      padding-bottom: 60px;
+    }
+
+    /* Glossy Aero Surface */
+    .glass-panel {
+      background: var(--aero-glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--aero-border);
+      border-radius: 12px;
+      box-shadow: var(--aero-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      position: relative;
+    }
+
+    .glass-panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 42%;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.03) 100%);
+      border-radius: 12px 12px 0 0;
+      pointer-events: none;
+    }
+
+    /* Header / Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      margin-bottom: 25px;
+      padding: 12px 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(210, 240, 255, 0.45) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 4px 18px rgba(0, 50, 100, 0.22);
+    }
+
+    .nav-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 800;
+      font-style: italic;
+      color: #0b4575;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+    }
+
+    .logo-orb {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ffffff 0%, #5ce5ff 40%, #006eb8 90%);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px #fff;
+    }
+
+    .user-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+
+    /* 2012 Aero Glossy Buttons */
+    .btn-aero {
+      background: linear-gradient(to bottom, #ffffff 0%, #e0efff 48%, #b5d9fc 52%, #85beff 100%);
+      border: 1px solid #5296d4;
+      border-radius: 18px;
+      padding: 6px 16px;
+      color: #0b3760;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), inset 0 1px 0 #ffffff;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+      transition: all 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .btn-aero:hover {
+      background: linear-gradient(to bottom, #ffffff 0%, #eef6ff 48%, #cce5ff 52%, #9ed0ff 100%);
+      border-color: #3b88d0;
+      box-shadow: 0 0 10px rgba(100, 190, 255, 0.7), inset 0 1px 0 #ffffff;
+    }
+
+    .btn-aero:active {
+      background: linear-gradient(to bottom, #95c4f7 0%, #badbff 100%);
+      box-shadow: inset 0 2px 4px rgba(0, 40, 80, 0.3);
+      transform: translateY(1px);
+    }
+
+    .btn-danger {
+      background: linear-gradient(to bottom, #fff5f5 0%, #ffd4d4 48%, #fca4a4 52%, #ff7f7f 100%);
+      border-color: #de6666;
+      color: #630c0c;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    /* Post Composer */
+    .composer {
+      padding: 20px;
+      margin-bottom: 24px;
+      background: var(--aero-glass-card);
+    }
+
+    .composer h3 {
+      font-size: 15px;
+      margin-bottom: 12px;
+      color: #0b4575;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #7eaacb;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
+      font-size: 14px;
+      outline: none;
+      resize: vertical;
+      color: #1a2f42;
+    }
+
+    textarea:focus {
+      border-color: #0078d7;
+      box-shadow: 0 0 8px rgba(0, 120, 215, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .composer-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      gap: 10px;
+    }
+
+    .composer-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #15456f;
+      background: rgba(255, 255, 255, 0.65);
+      padding: 5px 12px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+    }
+
+    .emoji-tray {
+      display: flex;
+      gap: 3px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 4px 8px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .emoji-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 2px 4px;
+      transition: transform 0.1s;
+    }
+
+    .emoji-btn:hover {
+      transform: scale(1.3);
+    }
+
+    .img-preview-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .img-preview {
+      max-height: 120px;
+      max-width: 200px;
+      border-radius: 6px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      display: block;
+    }
+
+    .img-remove-btn {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #e23b3b;
+      color: white;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Feed & Post Cards */
+    .feed {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .post-card {
+      padding: 18px 20px;
+      background: var(--aero-glass-card);
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d3efff, #7dc1fb);
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #0b497b;
+      font-size: 16px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar.anon {
+      background: linear-gradient(135deg, #e4e4e4, #9fa7af);
+      color: #3b4249;
+    }
+
+    .author-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: #09416f;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-anon {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(120, 140, 160, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      color: #334e68;
+      font-weight: normal;
+    }
+
+    .post-time {
+      font-size: 12px;
+      color: #4b6782;
+    }
+
+    .post-content {
+      font-size: 15px;
+      line-height: 1.5;
+      color: #1a2f42;
+      margin-bottom: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .post-image {
+      max-width: 100%;
+      max-height: 480px;
+      border-radius: 8px;
+      border: 3px solid #ffffff;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      margin-bottom: 14px;
+      display: block;
+      background: #ffffff;
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.6);
+      align-items: center;
+    }
+
+    .action-btn {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 15px;
+      padding: 5px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #124b79;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      transition: all 0.15s ease;
+    }
+
+    .action-btn:hover {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 6px rgba(0, 120, 215, 0.25);
+    }
+
+    .action-btn.liked {
+      background: linear-gradient(to bottom, #ffeded 0%, #ffc7c7 100%);
+      border-color: #ff8e8e;
+      color: #b31616;
+    }
+
+    .comments-section {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .comment-item {
+      background: rgba(255, 255, 255, 0.65);
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+    }
+
+    .comment-item strong {
+      color: #0b4a7d;
+      margin-right: 6px;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .comment-input {
+      flex: 1;
+      padding: 6px 12px;
+      border-radius: 15px;
+      border: 1px solid #7eaacb;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+      outline: none;
+    }
+
+    /* Aero Windows / Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 20, 45, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 15px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-window {
+      width: 100%;
+      max-width: 390px;
+      background: var(--aero-glass-card);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 16px 45px rgba(0, 20, 50, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      overflow: hidden;
+    }
+
+    .modal-titlebar {
+      background: linear-gradient(to bottom, #dcefff 0%, #a4d5ff 48%, #7ebfff 52%, #4fa4ff 100%);
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #4a8ac4;
+      font-weight: 700;
+      font-size: 14px;
+      color: #0d3861;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .modal-close {
+      background: #e23b3b;
+      border: 1px solid #ffffff;
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .modal-body label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #103b60;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .modal-body input[type="text"],
+    .modal-body input[type="password"] {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #7eaacb;
+      background: #ffffff;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .tab-toggle {
+      display: flex;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+      margin-bottom: 6px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px;
+      background: transparent;
+      border: none;
+      font-weight: 700;
+      color: #245279;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab-btn.active {
+      color: #005aa3;
+      border-bottom: 2px solid #005aa3;
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .code-callout {
+      background: rgba(255, 255, 255, 0.85);
+      border: 2px dashed #0078d7;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      margin: 5px 0;
+    }
+
+    .code-display {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #00529b;
+      user-select: all;
+    }
+
+    .avatar-preview-box {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-orb"></span>
+        Aerotalk
+      </div>
+      <div class="user-bar" id="userBar"></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Composer -->
+    <section class="glass-panel composer">
+      <h3><span>💬</span> What's happening in your digital world?</h3>
+      <textarea id="postText" placeholder="Write something nostalgic, cool, or random..."></textarea>
+      
+      <div id="imgPreviewWrapper" class="img-preview-wrapper" style="display: none;">
+        <img id="imgPreview" class="img-preview" src="" alt="Preview">
+        <button class="img-remove-btn" onclick="clearImageAttachment()">✕</button>
+      </div>
+
+      <div class="composer-toolbar">
+        <div class="composer-actions">
+          <label class="btn-aero">
+            📷 Add Photo
+            <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelected(event)">
+          </label>
+
+          <div class="emoji-tray">
+            <button class="emoji-btn" onclick="insertEmoji('😀')">😀</button>
+            <button class="emoji-btn" onclick="insertEmoji('✨')">✨</button>
+            <button class="emoji-btn" onclick="insertEmoji('🎧')">🎧</button>
+            <button class="emoji-btn" onclick="insertEmoji('💙')">💙</button>
+            <button class="emoji-btn" onclick="insertEmoji('🌟')">🌟</button>
+            <button class="emoji-btn" onclick="insertEmoji('🎮')">🎮</button>
+          </div>
+
+          <label class="checkbox-container">
+            <input type="checkbox" id="anonCheck">
+            Post Anonymously
+          </label>
+        </div>
+
+        <button class="btn-aero" onclick="submitPost()">
+          ✦ Publish Post
+        </button>
+      </div>
+    </section>
+
+    <!-- Post list: Newest at top, oldest at bottom -->
+    <section class="feed" id="feedContainer"></section>
+  </main>
+
+  <!-- Login/Register Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-window">
+      <div class="modal-titlebar">
+        <span id="modalTitle">Welcome to Aerotalk</span>
+        <button class="modal-close" onclick="closeAuthModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="tab-toggle">
+          <button class="tab-btn active" id="loginTabBtn" onclick="switchAuthMode('login')">Log In</button>
+          <button class="tab-btn" id="regTabBtn" onclick="switchAuthMode('register')">Create Account</button>
+        </div>
+
+        <div>
+          <label for="authUsername">Username</label>
+          <input type="text" id="authUsername" placeholder="e.g. aero_surfer_2012" maxlength="25">
+        </div>
+
+        <div>
+          <label for="authPassword">Password</label>
+          <input type="password" id="authPassword" placeholder="••••••••">
+        </div>
+
+        <p style="font-size: 11px; color: #436685;">* Only username and password required. No email or phone needed.</p>
+
+        <button class="btn-aero" id="authSubmitBtn" onclick="handleAuthSubmit()">
+          Log In
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Success / Code Modal -->
+  <div class="modal-overlay" id="codeModal">
+    <div class="modal-window">
+      <div class="modal-titlebar">
+        <span>Account Created!</span>
+        <button class="modal-close" onclick="closeCodeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; line-height: 1.4; color: #103b60;">
+          Welcome to Aerotalk! Below is your <strong>Secret Recovery Code</strong>. You will need this code whenever you want to change your password in the future:
+        </p>
+        <div class="code-callout">
+          <div class="code-display" id="generatedCodeDisplay">AERO-0000</div>
+        </div>
+        <p style="font-size: 11px; color: #d03030; font-weight: 600;">
+          ⚠️ Write this code down or copy it now. It cannot be recovered without an email!
+        </p>
+        <button class="btn-aero" onclick="closeCodeModal()">Got it, continue to Aerotalk</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customize Account Modal (Profile Picture & Password ONLY) -->
+  <div class="modal-overlay" id="customizeModal">
+    <div class="modal-window">
+      <div class="modal-titlebar">
+        <span>Customize Account</span>
+        <button class="modal-close" onclick="closeCustomizeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- 1. Profile Picture -->
+        <div>
+          <label>1. Profile Picture</label>
+          <div class="avatar-preview-box">
+            <div class="avatar" id="customAvatarPreview">?</div>
+            <div>
+              <label class="btn-aero" style="display: inline-flex; cursor: pointer;">
+                Change Photo
+                <input type="file" id="customAvatarInput" accept="image/*" style="display: none;" onchange="handleAvatarSelected(event)">
+              </label>
+              <div style="font-size: 11px; color: #486a87; margin-top: 4px;">JPG, PNG or GIF</div>
+            </div>
+          </div>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid rgba(255, 255, 255, 0.8);">
+
+        <!-- 2. Change Password -->
+        <div>
+          <label>2. Change Password</label>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <input type="text" id="custRecoveryCode" placeholder="Enter Secret Code (e.g. AERO-XXXX)" style="text-transform: uppercase;">
+            <input type="password" id="custNewPassword" placeholder="New Password">
+          </div>
+        </div>
+
+        <button class="btn-aero" onclick="saveAccountCustomizations()" style="margin-top: 6px;">
+          💾 Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Storage fallback for strict sandbox environments
+    const memStore = {};
+    function getItem(key) {
+      try { return localStorage.getItem(key); } catch(e) { return memStore[key] || null; }
+    }
+    function setItem(key, val) {
+      try { localStorage.setItem(key, val); } catch(e) { memStore[key] = val; }
+    }
+    function removeItem(key) {
+      try { localStorage.removeItem(key); } catch(e) { delete memStore[key]; }
+    }
+
+    const STORAGE_KEY_POSTS = "aerotalk_posts_v2";
+    const STORAGE_KEY_USERS = "aerotalk_users_v2";
+    const STORAGE_KEY_SESSION = "aerotalk_active_user_v2";
+    const STORAGE_KEY_ANON_ID = "aerotalk_anon_id";
+
+    // Assign persistent guest ID so anonymous likes work
+    let anonGuestId = getItem(STORAGE_KEY_ANON_ID);
+    if (!anonGuestId) {
+      anonGuestId = "anon_" + Math.random().toString(36).substring(2, 9);
+      setItem(STORAGE_KEY_ANON_ID, anonGuestId);
+    }
+
+    let currentUser = getItem(STORAGE_KEY_SESSION) || null;
+    let authMode = "login";
+    let pendingPostImage = null;
+    let pendingAvatarImage = null;
+
+    function getStoredPosts() {
+      const data = getItem(STORAGE_KEY_POSTS);
+      if (!data) {
+        const seedPosts = [
+          {
+            id: 1,
+            author: "aero_dreamer",
+            isAnon: false,
+            text: "Testing out Aerotalk! Glass windows, aqua glow, and 2012 vibes. Feel free to like anonymously! 🎧✨",
+            image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80",
+            timestamp: Date.now() - 3600000 * 20,
+            likes: [],
+            comments: [
+              { author: "guest_surfer", text: "Looks just like Windows 7 and MSN. Love it." }
+            ]
+          },
+          {
+            id: 2,
+            author: "Anonymous",
+            isAnon: true,
+            text: "Anonymous post: Anyone can like this without logging in! 💙",
+            image: null,
+            timestamp: Date.now() - 3600000 * 3,
+            likes: [],
+            comments: []
+          }
+        ];
+        setItem(STORAGE_KEY_POSTS, JSON.stringify(seedPosts));
+        return seedPosts;
+      }
+      try { return JSON.parse(data); } catch(e) { return []; }
+    }
+
+    function savePosts(posts) {
+      setItem(STORAGE_KEY_POSTS, JSON.stringify(posts));
+    }
+
+    function getStoredUsers() {
+      try { return JSON.parse(getItem(STORAGE_KEY_USERS) || "{}"); } catch(e) { return {}; }
+    }
+
+    function saveUsers(users) {
+      setItem(STORAGE_KEY_USERS, JSON.stringify(users));
+    }
+
+    function escapeHTML(str) {
+      if (!str) return "";
+      return String(str).replace(/[&<>'"]/g, t => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[t] || t));
+    }
+
+    function formatTime(timestamp) {
+      const diffSecs = Math.floor((Date.now() - timestamp) / 1000);
+      if (diffSecs < 60) return "Just now";
+      const diffMins = Math.floor(diffSecs / 60);
+      if (diffMins < 60) return diffMins + "m ago";
+      const diffHours = Math.floor(diffMins / 60);
+      if (diffHours < 24) return diffHours + "h ago";
+      return new Date(timestamp).toLocaleDateString();
+    }
+
+    function getViewerId() {
+      return currentUser ? ("u:" + currentUser) : ("anon:" + anonGuestId);
+    }
+
+    // --- Render Navigation ---
+    function renderUserBar() {
+      const userBar = document.getElementById("userBar");
+      if (currentUser) {
+        userBar.innerHTML = `
+          <span>Signed in as <strong>${escapeHTML(currentUser)}</strong></span>
+          <button class="btn-aero" onclick="openCustomizeModal()">⚙️ Customize Account</button>
+          <button class="btn-aero btn-danger" onclick="logout()">Sign Out</button>
+        `;
+      } else {
+        userBar.innerHTML = `
+          <span>Browsing as Guest (Anonymous)</span>
+          <button class="btn-aero" onclick="openAuthModal('login')">Sign In</button>
+          <button class="btn-aero" onclick="openAuthModal('register')">Create Account</button>
+        `;
+      }
+    }
+
+    // --- Render Feed ---
+    function renderFeed() {
+      const feedContainer = document.getElementById("feedContainer");
+      const posts = getStoredPosts();
+      const users = getStoredUsers();
+      const viewerId = getViewerId();
+
+      // Sorted newest to oldest (newest at top, oldest at bottom)
+      const sorted = [...posts].sort((a, b) => b.timestamp - a.timestamp);
+
+      if (sorted.length === 0) {
+        feedContainer.innerHTML = `
+          <div class="glass-panel post-card" style="text-align: center; color: #1e4569;">
+            No posts published yet. Share the first one!
+          </div>`;
+        return;
+      }
+
+      feedContainer.innerHTML = sorted.map(post => {
+        const isLiked = Array.isArray(post.likes) && post.likes.includes(viewerId);
+        const likeCount = Array.isArray(post.likes) ? post.likes.length : 0;
+        const timeAgo = formatTime(post.timestamp);
+
+        // Determine avatar
+        let avatarMarkup = "";
+        if (post.isAnon) {
+          avatarMarkup = `<div class="avatar anon">?</div>`;
+        } else {
+          const userObj = users[post.author];
+          if (userObj && userObj.avatar) {
+            avatarMarkup = `<div class="avatar"><img src="${userObj.avatar}" alt="${escapeHTML(post.author)}"></div>`;
+          } else {
+            const initial = (post.author || "U").charAt(0).toUpperCase();
+            avatarMarkup = `<div class="avatar">${initial}</div>`;
+          }
+        }
+
+        const commentsMarkup = (post.comments || []).map(c => `
+          <div class="comment-item">
+            <strong>${escapeHTML(c.author)}:</strong>${escapeHTML(c.text)}
+          </div>
+        `).join("");
+
+        const imageMarkup = post.image 
+          ? `<img src="${post.image}" class="post-image" alt="Post picture" loading="lazy">` 
+          : "";
+
+        return `
+          <article class="glass-panel post-card">
+            <div class="post-header">
+              <div class="author-info">
+                ${avatarMarkup}
+                <div>
+                  <div class="author-name">
+                    ${escapeHTML(post.author)}
+                    ${post.isAnon ? '<span class="badge-anon">Anonymous</span>' : ''}
+                  </div>
+                  <div class="post-time">${timeAgo}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="post-content">${escapeHTML(post.text)}</div>
+            ${imageMarkup}
+
+            <div class="post-actions">
+              <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike(${post.id})">
+                ${isLiked ? '❤️ Liked' : '🤍 Like'} (${likeCount})
+              </button>
+              <span style="font-size: 13px; color: #1d4d73; font-weight: 600;">
+                💬 ${(post.comments || []).length} Comments
+              </span>
+            </div>
+
+            <div class="comments-section">
+              ${commentsMarkup}
+              <div class="comment-form">
+                <input type="text" class="comment-input" id="comment-input-${post.id}" placeholder="Write a comment..." onkeydown="handleCommentKey(event, ${post.id})">
+                <button class="btn-aero" onclick="submitComment(${post.id})">Reply</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    // --- Likes (Works for both Anonymous Guests & Logged-in Users) ---
+    function toggleLike(postId) {
+      const viewerId = getViewerId();
+      const posts = getStoredPosts();
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      if (!Array.isArray(post.likes)) post.likes = [];
+      const index = post.likes.indexOf(viewerId);
+
+      if (index === -1) {
+        post.likes.push(viewerId);
+      } else {
+        post.likes.splice(index, 1);
+      }
+
+      savePosts(posts);
+      renderFeed();
+    }
+
+    // --- Post Composition ---
+    function insertEmoji(emoji) {
+      const textarea = document.getElementById("postText");
+      textarea.value += emoji;
+      textarea.focus();
+    }
+
+    function handleImageSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        pendingPostImage = e.target.result;
+        document.getElementById("imgPreview").src = pendingPostImage;
+        document.getElementById("imgPreviewWrapper").style.display = "inline-block";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearImageAttachment() {
+      pendingPostImage = null;
+      document.getElementById("imageInput").value = "";
+      document.getElementById("imgPreview").src = "";
+      document.getElementById("imgPreviewWrapper").style.display = "none";
+    }
+
+    function submitPost() {
+      const text = document.getElementById("postText").value.trim();
+      const isAnon = document.getElementById("anonCheck").checked;
+
+      if (!text && !pendingPostImage) {
+        alert("Please enter text or attach an image.");
+        return;
+      }
+
+      const authorName = (isAnon || !currentUser) ? "Anonymous" : currentUser;
+
+      const newPost = {
+        id: Date.now(),
+        author: authorName,
+        isAnon: isAnon || !currentUser,
+        text: text,
+        image: pendingPostImage,
+        timestamp: Date.now(),
+        likes: [],
+        comments: []
+      };
+
+      const posts = getStoredPosts();
+      posts.push(newPost);
+      savePosts(posts);
+
+      document.getElementById("postText").value = "";
+      document.getElementById("anonCheck").checked = false;
+      clearImageAttachment();
+      renderFeed();
+    }
+
+    // --- Comments ---
+    function submitComment(postId) {
+      const input = document.getElementById(`comment-input-${postId}`);
+      const text = input.value.trim();
+      if (!text) return;
+
+      const author = currentUser ? currentUser : "Anonymous";
+      const posts = getStoredPosts();
+      const post = posts.find(p => p.id === postId);
+
+      if (post) {
+        if (!post.comments) post.comments = [];
+        post.comments.push({ author: author, text: text });
+        savePosts(posts);
+        renderFeed();
+      }
+    }
+
+    function handleCommentKey(e, postId) {
+      if (e.key === "Enter") submitComment(postId);
+    }
+
+    // --- Auth & Account Creation with Secret Code ---
+    function openAuthModal(mode) {
+      switchAuthMode(mode);
+      document.getElementById("authModal").classList.add("open");
+      document.getElementById("authUsername").focus();
+    }
+
+    function closeAuthModal() {
+      document.getElementById("authModal").classList.remove("open");
+      document.getElementById("authUsername").value = "";
+      document.getElementById("authPassword").value = "";
+    }
+
+    function switchAuthMode(mode) {
+      authMode = mode;
+      const title = document.getElementById("modalTitle");
+      const submitBtn = document.getElementById("authSubmitBtn");
+      const loginTab = document.getElementById("loginTabBtn");
+      const regTab = document.getElementById("regTabBtn");
+
+      if (mode === "login") {
+        title.innerText = "Log In to Aerotalk";
+        submitBtn.innerText = "Log In";
+        loginTab.classList.add("active");
+        regTab.classList.remove("active");
+      } else {
+        title.innerText = "Create an Account";
+        submitBtn.innerText = "Register";
+        regTab.classList.add("active");
+        loginTab.classList.remove("active");
+      }
+    }
+
+    function generateRecoveryCode() {
+      const num = Math.floor(1000 + Math.random() * 9000);
+      return "AERO-" + num;
+    }
+
+    function handleAuthSubmit() {
+      const user = document.getElementById("authUsername").value.trim();
+      const pass = document.getElementById("authPassword").value.trim();
+
+      if (!user || !pass) {
+        alert("Please enter both username and password.");
+        return;
+      }
+
+      const users = getStoredUsers();
+
+      if (authMode === "register") {
+        if (users[user]) {
+          alert("Username is already taken. Please choose another.");
+          return;
+        }
+
+        const recoveryCode = generateRecoveryCode();
+        users[user] = {
+          password: pass,
+          recoveryCode: recoveryCode,
+          avatar: null,
+          createdAt: Date.now()
+        };
+        saveUsers(users);
+
+        currentUser = user;
+        setItem(STORAGE_KEY_SESSION, currentUser);
+        closeAuthModal();
+
+        // Show recovery code window
+        document.getElementById("generatedCodeDisplay").innerText = recoveryCode;
+        document.getElementById("codeModal").classList.add("open");
+
+        renderUserBar();
+        renderFeed();
+      } else {
+        if (!users[user] || users[user].password !== pass) {
+          alert("Invalid username or password.");
+          return;
+        }
+        currentUser = user;
+        setItem(STORAGE_KEY_SESSION, currentUser);
+        closeAuthModal();
+        renderUserBar();
+        renderFeed();
+      }
+    }
+
+    function closeCodeModal() {
+      document.getElementById("codeModal").classList.remove("open");
+    }
+
+    function logout() {
+      currentUser = null;
+      removeItem(STORAGE_KEY_SESSION);
+      renderUserBar();
+      renderFeed();
+    }
+
+    // --- Customize Account Modal (Profile Picture & Password ONLY) ---
+    function openCustomizeModal() {
+      if (!currentUser) return;
+      const users = getStoredUsers();
+      const userObj = users[currentUser] || {};
+      
+      pendingAvatarImage = userObj.avatar || null;
+      updateAvatarPreview();
+
+      document.getElementById("custRecoveryCode").value = "";
+      document.getElementById("custNewPassword").value = "";
+      document.getElementById("customizeModal").classList.add("open");
+    }
+
+    function closeCustomizeModal() {
+      document.getElementById("customizeModal").classList.remove("open");
+    }
+
+    function updateAvatarPreview() {
+      const preview = document.getElementById("customAvatarPreview");
+      if (pendingAvatarImage) {
+        preview.innerHTML = `<img src="${pendingAvatarImage}" alt="avatar">`;
+      } else {
+        const initial = currentUser.charAt(0).toUpperCase();
+        preview.innerText = initial;
+      }
+    }
+
+    function handleAvatarSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        pendingAvatarImage = e.target.result;
+        updateAvatarPreview();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveAccountCustomizations() {
+      if (!currentUser) return;
+      const users = getStoredUsers();
+      const userObj = users[currentUser];
+      if (!userObj) return;
+
+      const codeInput = document.getElementById("custRecoveryCode").value.trim().toUpperCase();
+      const newPass = document.getElementById("custNewPassword").value.trim();
+
+      // If user attempted to change password, verify recovery code
+      if (newPass.length > 0) {
+        if (!codeInput) {
+          alert("You must enter your Secret Recovery Code to change your password!");
+          return;
+        }
+        if (codeInput !== userObj.recoveryCode.toUpperCase()) {
+          alert("Incorrect Secret Recovery Code. Password change rejected.");
+          return;
+        }
+        userObj.password = newPass;
+      }
+
+      // Update avatar
+      userObj.avatar = pendingAvatarImage;
+
+      users[currentUser] = userObj;
+      saveUsers(users);
+
+      alert("Account updated successfully!");
+      closeCustomizeModal();
+      renderFeed();
+    }
+
+    // Start application
+    renderUserBar();
+    renderFeed();
+  </script>
+</body>
+</html>
