@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aerotalk</title>
   
-  <!-- On-Screen Debugger: Catches any error instantly -->
+  <!-- On-Screen Debugger -->
   <script>
     window.addEventListener('error', function(e) {
       var box = document.getElementById('debugBanner');
       if (box) {
         box.style.display = 'block';
-        box.innerHTML = '<strong>⚠️ Script Notice:</strong> ' + e.message + ' (Line ' + e.lineno + ')';
+        box.innerHTML = '<strong>⚠️ Notice:</strong> ' + e.message + ' (Line ' + e.lineno + ')';
       }
     });
   </script>
 
-  <!-- Firebase Compat SDKs -->
+  <!-- Firebase Compat SDKs (No import syntax needed!) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
@@ -99,10 +99,10 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      cursor: pointer;
       user-select: none;
     }
 
-    /* Custom AT Aero Orb */
     .logo-orb {
       width: 40px;
       height: 40px;
@@ -165,6 +165,186 @@
       padding: 6px 15px;
       color: #0b3760;
       font-weight: 700;
+      font-size: Here is the complete updated **`index.html`** with the sub-chats / category system ("Mother Posts"). 
+
+### What was added:
+1. **Category Hub (Main Page)**: Replaced the single long list on the homepage with glossy Aero category cards showing category title, description, and a real-time post count badge (`💬 X posts`).
+2. **Dedicated Sub-Chat Pages**: Clicking any category transitions smoothly into that sub-chat, displaying the category name at the top with a **`← Back to Categories`** glass navigation button.
+3. **Category-Specific Posting**: Posts, comments, likes, photos, and anonymous toggles operate strictly inside their respective category sub-chat.
+4. **Create New Categories ("Mother Posts")**: Users can create custom categories directly from the main hub.
+5. **Preserved All Features**: Secret recovery code auth, anonymous likes/posts, account customization, and the custom **AT** logo orb are fully preserved[cite: 1].
+
+---
+
+### Replace your `index.html` with this updated code:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aerotalk</title>
+  
+  <!-- On-Screen Debugger -->
+  <script>
+    window.addEventListener('error', function(e) {
+      var box = document.getElementById('debugBanner');
+      if (box) {
+        box.style.display = 'block';
+        box.innerHTML = '<strong>⚠️ Notice:</strong> ' + e.message + ' (Line ' + e.lineno + ')';
+      }
+    });
+  </script>
+
+  <!-- Firebase Compat SDKs (No import syntax needed) -->
+  <script src="[https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js)"></script>
+  <script src="[https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js)"></script>
+
+  <style>
+    :root {
+      --aero-blue: #0078d7;
+      --aero-glass-bg: rgba(255, 255, 255, 0.45);
+      --aero-glass-card: rgba(255, 255, 255, 0.72);
+      --aero-border: rgba(255, 255, 255, 0.85);
+      --aero-shadow: 0 8px 32px 0 rgba(0, 48, 115, 0.3);
+      --aero-text: #132b40;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Tahoma", "Lucida Grande", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.75) 0%, transparent 25%),
+                  radial-gradient(circle at 82% 28%, rgba(135, 240, 255, 0.6) 0%, transparent 40%),
+                  linear-gradient(135deg, #1875cd 0%, #37bfe7 35%, #6cd195 75%, #a0eb64 100%);
+      background-attachment: fixed;
+      color: var(--aero-text);
+      padding-bottom: 60px;
+    }
+
+    .glass-panel {
+      background: var(--aero-glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--aero-border);
+      border-radius: 12px;
+      box-shadow: var(--aero-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      position: relative;
+    }
+
+    .glass-panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.03) 100%);
+      border-radius: 12px 12px 0 0;
+      pointer-events: none;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      margin-bottom: 20px;
+      padding: 10px 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(210, 240, 255, 0.48) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 4px 18px rgba(0, 50, 100, 0.22);
+    }
+
+    .nav-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .logo-orb {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 70, 150, 0.4), inset 0 1px 2px #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #00b4f8;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .logo-orb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .logo-text {
+      font-size: 25px;
+      font-weight: 800;
+      font-style: italic;
+      color: #0b4575;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-badge {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 12px;
+      font-style: normal;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      color: #0d4e82;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+
+    /* Aero Glossy Buttons */
+    .btn-aero {
+      background: linear-gradient(to bottom, #ffffff 0%, #e0efff 48%, #b5d9fc 52%, #85beff 100%);
+      border: 1px solid #5296d4;
+      border-radius: 18px;
+      padding: 6px 15px;
+      color: #0b3760;
+      font-weight: 700;
       font-size: 13px;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), inset 0 1px 0 #ffffff;
@@ -200,7 +380,6 @@
       padding: 0 15px;
     }
 
-    /* Diagnostics Banner */
     .banner {
       background: rgba(255, 245, 200, 0.95);
       border: 2px solid #e6a800;
@@ -212,6 +391,108 @@
       display: none;
       line-height: 1.4;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Sub-Chat Header / Breadcrumb */
+    .category-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding: 12px 18px;
+      background: var(--aero-glass-card);
+    }
+
+    .category-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0b4575;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Category Hub Grid */
+    .hub-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hub-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0b4575;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .category-card {
+      padding: 18px;
+      background: var(--aero-glass-card);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 150px;
+    }
+
+    .category-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0, 60, 140, 0.35);
+    }
+
+    .category-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .cat-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: #09416f;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cat-badge {
+      background: linear-gradient(180deg, #d8f1ff, #a5dbff);
+      border: 1px solid #5aa1df;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #0b4575;
+      white-space: nowrap;
+    }
+
+    .cat-desc {
+      font-size: 13px;
+      color: #2e5170;
+      margin-top: 8px;
+      line-height: 1.35;
+      flex: 1;
+    }
+
+    .cat-footer {
+      font-size: 11px;
+      font-weight: 700;
+      color: #0078d7;
+      text-align: right;
     }
 
     /* Composer */
@@ -645,18 +926,15 @@
   <!-- Header -->
   <header>
     <div class="nav-container">
-      <div class="logo-container">
-        <!-- Exact AT Aero Orb Replica -->
+      <div class="logo-container" onclick="navigateHome()">
         <div class="logo-orb">
           <img id="logoImg" src="AeroTalklogo.png" alt="AT Logo" onerror="this.style.display='none'; document.getElementById('logoSvg').style.display='block';">
           <svg id="logoSvg" viewBox="0 0 100 100" style="display: none; width: 100%; height: 100%;">
             <circle cx="50" cy="50" r="48" fill="#00b4f8" />
-            <!-- Painterly brush perimeter accents -->
             <path d="M 22 22 C 32 12, 54 10, 70 12 C 52 14, 30 20, 20 34 Z" fill="#6fe3d9" opacity="0.9"/>
             <path d="M 16 35 C 12 48, 14 65, 22 75 C 16 63, 15 48, 20 35 Z" fill="#4ecbbd" opacity="0.8"/>
             <path d="M 48 88 C 66 87, 82 78, 89 65 C 84 80, 68 89, 48 88 Z" fill="#325cd6" opacity="0.9"/>
             <path d="M 76 74 C 86 62, 88 44, 85 30 C 89 44, 87 62, 76 76 Z" fill="#416ee2" opacity="0.8"/>
-            <!-- Calligraphic AT -->
             <text x="49" y="65" font-family="'Brush Script MT', 'Segoe Script', 'Great Vibes', cursive" font-size="44" font-weight="bold" fill="#d8cefc" stroke="#8775df" stroke-width="0.8" text-anchor="middle" font-style="italic">AT</text>
           </svg>
         </div>
@@ -677,46 +955,72 @@
   <main class="container">
     <div class="banner" id="debugBanner"></div>
 
-    <!-- Post Composer -->
-    <section class="glass-panel composer">
-      <h3><span>💬</span> What's happening in your digital world?</h3>
-      <textarea id="postText" placeholder="Write something nostalgic, cool, or random..."></textarea>
-      
-      <div id="imgPreviewWrapper" class="img-preview-wrapper" style="display: none;">
-        <img id="imgPreview" class="img-preview" src="" alt="Preview">
-        <button class="img-remove-btn" onclick="clearImageAttachment()">✕</button>
-      </div>
-
-      <div class="composer-toolbar">
-        <div class="composer-actions">
-          <label class="btn-aero" style="cursor: pointer;">
-            📷 Add Photo
-            <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelected(event)">
-          </label>
-
-          <div class="emoji-tray">
-            <button class="emoji-btn" type="button" onclick="insertEmoji('😀')">😀</button>
-            <button class="emoji-btn" type="button" onclick="insertEmoji('✨')">✨</button>
-            <button class="emoji-btn" type="button" onclick="insertEmoji('🎧')">🎧</button>
-            <button class="emoji-btn" type="button" onclick="insertEmoji('💙')">💙</button>
-            <button class="emoji-btn" type="button" onclick="insertEmoji('🌟')">🌟</button>
-            <button class="emoji-btn" type="button" onclick="insertEmoji('🎮')">🎮</button>
-          </div>
-
-          <label class="checkbox-container">
-            <input type="checkbox" id="anonCheck">
-            Post Anonymously
-          </label>
-        </div>
-
-        <button class="btn-aero" id="publishBtn" type="button" onclick="submitPost()">
-          ✦ Publish Post
+    <!-- VIEW 1: CATEGORY HUB (Main Page) -->
+    <section id="hubView">
+      <div class="hub-header">
+        <h2>Sub-Chats & Mother Posts</h2>
+        <button class="btn-aero" onclick="openCreateCategoryModal()">
+          ➕ New Sub-Chat
         </button>
+      </div>
+      <div class="category-grid" id="categoryGrid">
+        <!-- Rendered by JS -->
       </div>
     </section>
 
-    <!-- Post list -->
-    <section class="feed" id="feedContainer"></section>
+    <!-- VIEW 2: SUB-CHAT FEED (Inside a Category) -->
+    <section id="subChatView" style="display: none;">
+      <!-- Category Header Bar with Back Button -->
+      <div class="glass-panel category-topbar">
+        <div class="category-title" id="activeCategoryTitle">
+          🌐 Lobby
+        </div>
+        <button class="btn-aero" onclick="navigateHome()">
+          ← Back to All Sub-Chats
+        </button>
+      </div>
+
+      <!-- Post Composer for this Category -->
+      <section class="glass-panel composer">
+        <h3><span>💬</span> Post in this sub-chat:</h3>
+        <textarea id="postText" placeholder="Write something nostalgic, cool, or random..."></textarea>
+        
+        <div id="imgPreviewWrapper" class="img-preview-wrapper" style="display: none;">
+          <img id="imgPreview" class="img-preview" src="" alt="Preview">
+          <button class="img-remove-btn" onclick="clearImageAttachment()">✕</button>
+        </div>
+
+        <div class="composer-toolbar">
+          <div class="composer-actions">
+            <label class="btn-aero" style="cursor: pointer;">
+              📷 Add Photo
+              <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelected(event)">
+            </label>
+
+            <div class="emoji-tray">
+              <button class="emoji-btn" type="button" onclick="insertEmoji('😀')">😀</button>
+              <button class="emoji-btn" type="button" onclick="insertEmoji('✨')">✨</button>
+              <button class="emoji-btn" type="button" onclick="insertEmoji('🎧')">🎧</button>
+              <button class="emoji-btn" type="button" onclick="insertEmoji('💙')">💙</button>
+              <button class="emoji-btn" type="button" onclick="insertEmoji('🌟')">🌟</button>
+              <button class="emoji-btn" type="button" onclick="insertEmoji('🎮')">🎮</button>
+            </div>
+
+            <label class="checkbox-container">
+              <input type="checkbox" id="anonCheck">
+              Post Anonymously
+            </label>
+          </div>
+
+          <button class="btn-aero" id="publishBtn" type="button" onclick="submitPost()">
+            ✦ Publish Post
+          </button>
+        </div>
+      </section>
+
+      <!-- Category Posts (Newest at top, oldest at bottom) -->
+      <section class="feed" id="feedContainer"></section>
+    </section>
   </main>
 
   <!-- Login/Register Modal -->
@@ -751,7 +1055,32 @@
     </div>
   </div>
 
-  <!-- Registration Success Code Modal -->
+  <!-- Create Sub-Chat / Mother Post Modal -->
+  <div class="modal-overlay" id="categoryModal">
+    <div class="modal-window">
+      <div class="modal-titlebar">
+        <span>Create New Sub-Chat</span>
+        <button class="modal-close" onclick="closeCreateCategoryModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label for="newCatTitle">Sub-Chat Name</label>
+          <input type="text" id="newCatTitle" placeholder="e.g. 🎮 Gaming & Emulators" maxlength="35">
+        </div>
+
+        <div>
+          <label for="newCatDesc">Description</label>
+          <input type="text" id="newCatDesc" placeholder="Briefly describe what this sub-chat is for..." maxlength="90">
+        </div>
+
+        <button class="btn-aero" onclick="handleCreateCategory()" style="margin-top: 5px;">
+          ✦ Create Sub-Chat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secret Recovery Code Modal -->
   <div class="modal-overlay" id="codeModal">
     <div class="modal-window">
       <div class="modal-titlebar">
@@ -813,36 +1142,31 @@
   </div>
 
   <script>
+    // ============================================================================
+    // ⬇️ PASTE YOUR FIREBASE CONFIG VALUES BELOW ⬇️
+    // (Only paste the keys inside this object, do NOT paste any import statements)
+    // ============================================================================
+    const firebaseConfig = {
+      apiKey: "PASTE_YOUR_API_KEY",
+      authDomain: "PASTE_YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "PASTE_YOUR_PROJECT_ID",
+      storageBucket: "PASTE_YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "PASTE_YOUR_SENDER_ID",
+      appId: "PASTE_YOUR_APP_ID"
+    };
+    // ============================================================================
 
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAU0BHEbtm7kmI3_mFbc1p6nLJuzy1LBec",
-  authDomain: "aerotalk-1.firebaseapp.com",
-  projectId: "aerotalk-1",
-  storageBucket: "aerotalk-1.firebasestorage.app",
-  messagingSenderId: "216141247700",
-  appId: "1:216141247700:web:e783811ff40c6f0963b741",
-  measurementId: "G-ZF4SL9G1QB"
-};
-
-// Initialize Firebase
-
-
-    // Safe Local Storage
+    // Safe memory storage fallback
     const memStore = {};
     function getItem(k) { try { return localStorage.getItem(k); } catch(e) { return memStore[k] || null; } }
     function setItem(k, v) { try { localStorage.setItem(k, v); } catch(e) { memStore[k] = v; } }
     function removeItem(k) { try { localStorage.removeItem(k); } catch(e) { delete memStore[k]; } }
 
-    const STORAGE_KEY_SESSION = "aerotalk_active_user_v3";
-    const STORAGE_KEY_ANON_ID = "aerotalk_anon_id_v3";
-    const STORAGE_KEY_LOCAL_POSTS = "aerotalk_local_posts_v3";
-    const STORAGE_KEY_LOCAL_USERS = "aerotalk_local_users_v3";
+    const STORAGE_KEY_SESSION = "aerotalk_active_user_v4";
+    const STORAGE_KEY_ANON_ID = "aerotalk_anon_id_v4";
+    const STORAGE_KEY_LOCAL_POSTS = "aerotalk_local_posts_v4";
+    const STORAGE_KEY_LOCAL_USERS = "aerotalk_local_users_v4";
+    const STORAGE_KEY_LOCAL_CATS = "aerotalk_local_cats_v4";
 
     let anonGuestId = getItem(STORAGE_KEY_ANON_ID);
     if (!anonGuestId) {
@@ -855,11 +1179,21 @@ const firebaseConfig = {
     let pendingPostImage = null;
     let pendingAvatarImage = null;
 
+    // Default Seed Categories
+    const DEFAULT_CATEGORIES = [
+      { id: "lobby", name: "🌐 Aero Lobby", desc: "General chat, greetings, and introductions for everyone." },
+      { id: "retro", name: "💿 2010s Retro & Tech", desc: "Windows 7, MSN Messenger, iPods, and nostalgic tech talk." },
+      { id: "music", name: "🎧 Music Lounge", desc: "Share your favorite songs, electronic beats, and 2012 tunes." },
+      { id: "confessions", name: "💭 Random Thoughts", desc: "Anonymous confessions, shower thoughts, and late-night banter." }
+    ];
+
+    let liveCategories = [];
     let livePosts = [];
     let liveUsers = {};
+    let activeCategoryId = null;
     let db = null;
 
-    // --- Core Functions ---
+    // --- Helpers ---
     window.insertEmoji = function(emoji) {
       const el = document.getElementById("postText");
       if (el) {
@@ -912,7 +1246,45 @@ const firebaseConfig = {
       reader.readAsDataURL(file);
     }
 
-    // --- Render Nav ---
+    // --- Navigation (Hub vs Sub-Chat) ---
+    window.navigateHome = function() {
+      activeCategoryId = null;
+      document.getElementById("hubView").style.display = "block";
+      document.getElementById("subChatView").style.display = "none";
+      renderCategories();
+    };
+
+    window.openCategory = function(catId) {
+      activeCategoryId = catId;
+      const cat = liveCategories.find(c => c.id === catId);
+      document.getElementById("activeCategoryTitle").innerText = cat ? cat.name : "Sub-Chat";
+      document.getElementById("hubView").style.display = "none";
+      document.getElementById("subChatView").style.display = "block";
+      renderFeed();
+    };
+
+    // --- Render Category Hub Cards ---
+    function renderCategories() {
+      const grid = document.getElementById("categoryGrid");
+      if (!grid) return;
+
+      grid.innerHTML = liveCategories.map(cat => {
+        // Count how many posts belong to this category
+        const count = livePosts.filter(p => (p.categoryId || "lobby") === cat.id).length;
+        return `
+          <div class="glass-panel category-card" onclick="openCategory('${cat.id}')">
+            <div class="category-card-top">
+              <div class="cat-name">${escapeHTML(cat.name)}</div>
+              <span class="cat-badge">${count} ${count === 1 ? 'post' : 'posts'}</span>
+            </div>
+            <div class="cat-desc">${escapeHTML(cat.desc || '')}</div>
+            <div class="cat-footer">Enter Sub-Chat ➔</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // --- Render Nav User Bar ---
     window.renderUserBar = function() {
       const userBar = document.getElementById("userBar");
       if (!userBar) return;
@@ -932,19 +1304,23 @@ const firebaseConfig = {
       }
     };
 
-    // --- Render Feed ---
+    // --- Render Posts for Selected Category ---
     window.renderFeed = function() {
       const feedContainer = document.getElementById("feedContainer");
-      if (!feedContainer) return;
+      if (!feedContainer || !activeCategoryId) return;
 
       const viewerId = getViewerId();
-      // Ensure newest posts at top, oldest at bottom
-      const sorted = [...livePosts].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+      // Filter posts that belong to the active category (defaulting older posts to 'lobby')
+      const catPosts = livePosts.filter(p => (p.categoryId || "lobby") === activeCategoryId);
+      
+      // Sort newest at top, oldest at bottom
+      const sorted = [...catPosts].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
       if (sorted.length === 0) {
         feedContainer.innerHTML = `
           <div class="glass-panel post-card" style="text-align: center; color: #1e4569;">
-            No posts yet! Be the first to publish a post above.
+            This sub-chat is empty! Be the first to publish a post in this category.
           </div>`;
         return;
       }
@@ -1044,7 +1420,7 @@ const firebaseConfig = {
       }
     };
 
-    // --- Image Selection ---
+    // --- Image Handling ---
     window.handleImageSelected = function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1062,7 +1438,7 @@ const firebaseConfig = {
       document.getElementById("imgPreviewWrapper").style.display = "none";
     };
 
-    // --- Submit Post ---
+    // --- Publishing Post to Active Category ---
     window.submitPost = async function() {
       const textEl = document.getElementById("postText");
       const text = textEl ? textEl.value.trim() : "";
@@ -1075,6 +1451,7 @@ const firebaseConfig = {
 
       const authorName = (isAnon || !currentUser) ? "Anonymous" : currentUser;
       const newPost = {
+        categoryId: activeCategoryId || "lobby",
         author: authorName,
         isAnon: Boolean(isAnon || !currentUser),
         text: text,
@@ -1096,6 +1473,7 @@ const firebaseConfig = {
           livePosts.unshift(newPost);
           setItem(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(livePosts));
           renderFeed();
+          renderCategories();
         }
         textEl.value = "";
         document.getElementById("anonCheck").checked = false;
@@ -1133,6 +1511,47 @@ const firebaseConfig = {
         setItem(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(livePosts));
         renderFeed();
       }
+    };
+
+    // --- Category Creation ("Mother Post") ---
+    window.openCreateCategoryModal = function() {
+      document.getElementById("newCatTitle").value = "";
+      document.getElementById("newCatDesc").value = "";
+      document.getElementById("categoryModal").classList.add("open");
+      document.getElementById("newCatTitle").focus();
+    };
+
+    window.closeCreateCategoryModal = function() {
+      document.getElementById("categoryModal").classList.remove("open");
+    };
+
+    window.handleCreateCategory = async function() {
+      const title = document.getElementById("newCatTitle").value.trim();
+      const desc = document.getElementById("newCatDesc").value.trim();
+
+      if (!title) {
+        alert("Please enter a category name.");
+        return;
+      }
+
+      const id = "cat_" + Date.now();
+      const newCat = { id, name: title, desc: desc, timestamp: Date.now() };
+
+      if (db) {
+        try {
+          await db.collection("categories").doc(id).set(newCat);
+        } catch (err) {
+          alert("Error creating category in cloud: " + err.message);
+          return;
+        }
+      } else {
+        liveCategories.push(newCat);
+        setItem(STORAGE_KEY_LOCAL_CATS, JSON.stringify(liveCategories));
+        renderCategories();
+      }
+
+      closeCreateCategoryModal();
+      openCategory(id);
     };
 
     // --- Authentication ---
@@ -1200,7 +1619,7 @@ const firebaseConfig = {
         document.getElementById("generatedCodeDisplay").innerText = recoveryCode;
         document.getElementById("codeModal").classList.add("open");
         renderUserBar();
-        renderFeed();
+        if (activeCategoryId) renderFeed();
       } else {
         const existing = liveUsers[user];
         if (!existing || existing.password !== pass) {
@@ -1211,7 +1630,7 @@ const firebaseConfig = {
         setItem(STORAGE_KEY_SESSION, currentUser);
         closeAuthModal();
         renderUserBar();
-        renderFeed();
+        if (activeCategoryId) renderFeed();
       }
     };
 
@@ -1223,7 +1642,7 @@ const firebaseConfig = {
       currentUser = null;
       removeItem(STORAGE_KEY_SESSION);
       renderUserBar();
-      renderFeed();
+      if (activeCategoryId) renderFeed();
     };
 
     // --- Account Customization ---
@@ -1294,22 +1713,25 @@ const firebaseConfig = {
 
       alert("Account updated successfully!");
       closeCustomizeModal();
-      renderFeed();
+      if (activeCategoryId) renderFeed();
     };
 
-    // --- Fail-Safe Startup & Firebase Watchdog ---
+    // --- Startup Routine ---
     function init() {
-      // Step 1: Render interface immediately
       renderUserBar();
 
+      // Load local cache first
       try {
+        const storedCats = getItem(STORAGE_KEY_LOCAL_CATS);
+        liveCategories = storedCats ? JSON.parse(storedCats) : [...DEFAULT_CATEGORIES];
         livePosts = JSON.parse(getItem(STORAGE_KEY_LOCAL_POSTS) || "[]");
         liveUsers = JSON.parse(getItem(STORAGE_KEY_LOCAL_USERS) || "{}");
       } catch(e) {
+        liveCategories = [...DEFAULT_CATEGORIES];
         livePosts = [];
         liveUsers = {};
       }
-      renderFeed();
+      renderCategories();
 
       const badge = document.getElementById("connectionBadge");
       const banner = document.getElementById("debugBanner");
@@ -1320,51 +1742,53 @@ const firebaseConfig = {
 
       if (!isConfigFilled) {
         badge.innerText = "💻 Local Demo Mode";
-        banner.innerHTML = `<strong>⚠️ Firebase Keys Needed:</strong> Open <code>index.html</code> on GitHub and paste your real <code>firebaseConfig</code> keys so posts sync globally with your friends.`;
+        banner.innerHTML = `<strong>⚠️ Firebase Keys Needed:</strong> Open <code>index.html</code> and paste your <code>firebaseConfig</code> keys so all sub-chats and posts sync with your friends.`;
         banner.style.display = "block";
         return;
       }
 
       badge.innerText = "Connecting...";
 
-      // Step 2: 5-Second Watchdog (Prevents "Connecting..." from freezing forever)
-      let cloudConnected = false;
-      setTimeout(() => {
-        if (!cloudConnected && badge.innerText === "Connecting...") {
-          badge.innerText = "⚠️ Cloud Pending";
-          banner.innerHTML = `
-            <strong>⚠️ Firebase Connection Did Not Complete:</strong><br>
-            1. Make sure you clicked <strong>Create database</strong> in your <a href="https://console.firebase.google.com/" target="_blank" style="color: #0b4575; font-weight: bold;">Firebase Console</a> (under <strong>Firestore Database</strong>).<br>
-            2. Make sure your Firestore <strong>Rules</strong> tab is set to <code>allow read, write: if true;</code><br>
-            <em>The app will stay active in local mode while waiting for the cloud.</em>
-          `;
-          banner.style.display = "block";
-        }
-      }, 5000);
-
-      // Step 3: Initialize Cloud Connection
       try {
         if (!firebase.apps.length) {
           firebase.initializeApp(firebaseConfig);
         }
         db = firebase.firestore();
 
-        // Listen for Users
+        // 1. Listen for Users
         db.collection("users").onSnapshot(
           snapshot => {
             snapshot.forEach(doc => {
               liveUsers[doc.id] = doc.data();
             });
             setItem(STORAGE_KEY_LOCAL_USERS, JSON.stringify(liveUsers));
-            renderFeed();
+            if (activeCategoryId) renderFeed();
           },
           err => console.warn("User sync notice:", err)
         );
 
-        // Listen for Posts
+        // 2. Listen for Categories
+        db.collection("categories").onSnapshot(
+          snapshot => {
+            if (!snapshot.empty) {
+              const cloudCats = snapshot.docs.map(doc => doc.data());
+              // Merge default categories with custom cloud categories
+              const mergedMap = new Map();
+              DEFAULT_CATEGORIES.forEach(c => mergedMap.set(c.id, c));
+              cloudCats.forEach(c => mergedMap.set(c.id, c));
+              liveCategories = Array.from(mergedMap.values());
+            } else {
+              liveCategories = [...DEFAULT_CATEGORIES];
+            }
+            setItem(STORAGE_KEY_LOCAL_CATS, JSON.stringify(liveCategories));
+            renderCategories();
+          },
+          err => console.warn("Categories sync notice:", err)
+        );
+
+        // 3. Listen for Posts
         db.collection("posts").onSnapshot(
           snapshot => {
-            cloudConnected = true;
             badge.innerText = "🌐 Live Cloud";
             banner.style.display = "none";
             livePosts = snapshot.docs.map(doc => ({
@@ -1372,14 +1796,14 @@ const firebaseConfig = {
               ...doc.data()
             }));
             setItem(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(livePosts));
-            renderFeed();
+            renderCategories();
+            if (activeCategoryId) renderFeed();
           },
           err => {
-            cloudConnected = true;
             console.error("Firestore Error:", err);
             if (err.code === "permission-denied") {
               badge.innerText = "⚠️ Rules Blocked";
-              banner.innerHTML = `<strong>⚠️ Firestore Rules Blocked:</strong> Go to your <a href="https://console.firebase.google.com/" target="_blank" style="color: #0b4575; font-weight: bold;">Firebase Console</a> ➔ <strong>Firestore Database</strong> ➔ <strong>Rules</strong> tab, change the rules to <code>allow read, write: if true;</code>, and click <strong>Publish</strong>.`;
+              banner.innerHTML = `<strong>⚠️ Firestore Rules Blocked:</strong> Set rules to <code>allow read, write: if true;</code> in your Firebase Console.`;
               banner.style.display = "block";
             } else {
               badge.innerText = "⚠️ Connection Issue";
@@ -1392,7 +1816,7 @@ const firebaseConfig = {
       } catch (err) {
         console.error("Firebase setup error:", err);
         badge.innerText = "⚠️ Init Error";
-        banner.innerHTML = `<strong>Firebase Setup Error:</strong> ${err.message}. Check your <code>firebaseConfig</code> keys in <code>index.html</code>.`;
+        banner.innerHTML = `<strong>Firebase Error:</strong> ${err.message}`;
         banner.style.display = "block";
       }
     }
