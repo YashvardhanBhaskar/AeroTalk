@@ -16,7 +16,7 @@
     });
   </script>
 
-  <!-- Firebase Compat SDKs (No import syntax needed!) -->
+  <!-- Firebase Compat SDKs (No import syntax needed) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
@@ -25,8 +25,8 @@
       --aero-blue: #0078d7;
       --aero-glass-bg: rgba(255, 255, 255, 0.45);
       --aero-glass-card: rgba(255, 255, 255, 0.72);
-      --aero-border: rgba(255, 255, 255, 0.85);
-      --aero-shadow: 0 8px 32px 0 rgba(0, 48, 115, 0.3);
+      --aero-border: rgba(255, 255, 255, 0.88);
+      --aero-shadow: 0 8px 32px 0 rgba(0, 48, 115, 0.28);
       --aero-text: #132b40;
     }
 
@@ -37,7 +37,6 @@
       font-family: "Segoe UI", "Tahoma", "Lucida Grande", sans-serif;
     }
 
-    /* 2012 Frutiger Aero Aurora Wallpaper */
     body {
       min-height: 100vh;
       background: radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.75) 0%, transparent 25%),
@@ -45,7 +44,7 @@
                   linear-gradient(135deg, #1875cd 0%, #37bfe7 35%, #6cd195 75%, #a0eb64 100%);
       background-attachment: fixed;
       color: var(--aero-text);
-      padding-bottom: 60px;
+      padding-bottom: 70px;
     }
 
     .glass-panel {
@@ -53,7 +52,7 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--aero-border);
-      border-radius: 12px;
+      border-radius: 14px;
       box-shadow: var(--aero-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.95);
       position: relative;
     }
@@ -64,9 +63,9 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 42%;
+      height: 38%;
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.03) 100%);
-      border-radius: 12px 12px 0 0;
+      border-radius: 14px 14px 0 0;
       pointer-events: none;
     }
 
@@ -75,9 +74,9 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      margin-bottom: 20px;
-      padding: 10px 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(210, 240, 255, 0.48) 100%);
+      margin-bottom: 28px;
+      padding: 12px 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(210, 240, 255, 0.50) 100%);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.85);
@@ -98,14 +97,14 @@
     .logo-container {
       display: flex;
       align-items: center;
-      gap: 10px;
-      cursor: pointer;
+      gap: 12px;
       user-select: none;
+      cursor: pointer;
     }
 
     .logo-orb {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       border: 2px solid #ffffff;
       box-shadow: 0 2px 10px rgba(0, 70, 150, 0.4), inset 0 1px 2px #fff;
@@ -126,7 +125,7 @@
     }
 
     .logo-text {
-      font-size: 25px;
+      font-size: 26px;
       font-weight: 800;
       font-style: italic;
       color: #0b4575;
@@ -151,7 +150,7 @@
     .user-bar {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-size: 13px;
       font-weight: 600;
       flex-wrap: wrap;
@@ -161,205 +160,26 @@
     .btn-aero {
       background: linear-gradient(to bottom, #ffffff 0%, #e0efff 48%, #b5d9fc 52%, #85beff 100%);
       border: 1px solid #5296d4;
-      border-radius: 18px;
-      padding: 6px 15px;
-      color: #0b3760;
-      font-weight: 700;
-      font-size: Here is the complete updated **`index.html`** with the sub-chats / category system ("Mother Posts"). 
-
-### What was added:
-1. **Category Hub (Main Page)**: Replaced the single long list on the homepage with glossy Aero category cards showing category title, description, and a real-time post count badge (`💬 X posts`).
-2. **Dedicated Sub-Chat Pages**: Clicking any category transitions smoothly into that sub-chat, displaying the category name at the top with a **`← Back to Categories`** glass navigation button.
-3. **Category-Specific Posting**: Posts, comments, likes, photos, and anonymous toggles operate strictly inside their respective category sub-chat.
-4. **Create New Categories ("Mother Posts")**: Users can create custom categories directly from the main hub.
-5. **Preserved All Features**: Secret recovery code auth, anonymous likes/posts, account customization, and the custom **AT** logo orb are fully preserved[cite: 1].
-
----
-
-### Replace your `index.html` with this updated code:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aerotalk</title>
-  
-  <!-- On-Screen Debugger -->
-  <script>
-    window.addEventListener('error', function(e) {
-      var box = document.getElementById('debugBanner');
-      if (box) {
-        box.style.display = 'block';
-        box.innerHTML = '<strong>⚠️ Notice:</strong> ' + e.message + ' (Line ' + e.lineno + ')';
-      }
-    });
-  </script>
-
-  <!-- Firebase Compat SDKs (No import syntax needed) -->
-  <script src="[https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js)"></script>
-  <script src="[https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js)"></script>
-
-  <style>
-    :root {
-      --aero-blue: #0078d7;
-      --aero-glass-bg: rgba(255, 255, 255, 0.45);
-      --aero-glass-card: rgba(255, 255, 255, 0.72);
-      --aero-border: rgba(255, 255, 255, 0.85);
-      --aero-shadow: 0 8px 32px 0 rgba(0, 48, 115, 0.3);
-      --aero-text: #132b40;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", "Tahoma", "Lucida Grande", sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.75) 0%, transparent 25%),
-                  radial-gradient(circle at 82% 28%, rgba(135, 240, 255, 0.6) 0%, transparent 40%),
-                  linear-gradient(135deg, #1875cd 0%, #37bfe7 35%, #6cd195 75%, #a0eb64 100%);
-      background-attachment: fixed;
-      color: var(--aero-text);
-      padding-bottom: 60px;
-    }
-
-    .glass-panel {
-      background: var(--aero-glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--aero-border);
-      border-radius: 12px;
-      box-shadow: var(--aero-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-      position: relative;
-    }
-
-    .glass-panel::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 40%;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.03) 100%);
-      border-radius: 12px 12px 0 0;
-      pointer-events: none;
-    }
-
-    /* Header */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      margin-bottom: 20px;
-      padding: 10px 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(210, 240, 255, 0.48) 100%);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.85);
-      box-shadow: 0 4px 18px rgba(0, 50, 100, 0.22);
-    }
-
-    .nav-container {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      user-select: none;
-      cursor: pointer;
-    }
-
-    .logo-orb {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid #ffffff;
-      box-shadow: 0 2px 10px rgba(0, 70, 150, 0.4), inset 0 1px 2px #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background: #00b4f8;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .logo-orb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .logo-text {
-      font-size: 25px;
-      font-weight: 800;
-      font-style: italic;
-      color: #0b4575;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.8);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .status-badge {
-      font-size: 11px;
-      padding: 3px 9px;
-      border-radius: 12px;
-      font-style: normal;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.95);
-      color: #0d4e82;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .user-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      flex-wrap: wrap;
-    }
-
-    /* Aero Glossy Buttons */
-    .btn-aero {
-      background: linear-gradient(to bottom, #ffffff 0%, #e0efff 48%, #b5d9fc 52%, #85beff 100%);
-      border: 1px solid #5296d4;
-      border-radius: 18px;
-      padding: 6px 15px;
+      border-radius: 20px;
+      padding: 7px 18px;
       color: #0b3760;
       font-weight: 700;
       font-size: 13px;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), inset 0 1px 0 #ffffff;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-      transition: all 0.12s ease;
+      transition: all 0.14s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
     }
 
     .btn-aero:hover {
       background: linear-gradient(to bottom, #ffffff 0%, #eef6ff 48%, #cce5ff 52%, #9ed0ff 100%);
       border-color: #3b88d0;
       box-shadow: 0 0 10px rgba(100, 190, 255, 0.7), inset 0 1px 0 #ffffff;
+      transform: translateY(-1px);
     }
 
     .btn-aero:active {
@@ -374,149 +194,190 @@
       color: #630c0c;
     }
 
+    /* Centered Layout Wrapper */
     .container {
-      max-width: 860px;
+      max-width: 800px;
       margin: 0 auto;
-      padding: 0 15px;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #hubView, #subChatView {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .banner {
+      width: 100%;
       background: rgba(255, 245, 200, 0.95);
       border: 2px solid #e6a800;
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin-bottom: 18px;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
       font-size: 13px;
       color: #5c4300;
       display: none;
-      line-height: 1.4;
+      line-height: 1.45;
+      text-align: center;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
-    /* Sub-Chat Header / Breadcrumb */
-    .category-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-      padding: 12px 18px;
-      background: var(--aero-glass-card);
-    }
-
-    .category-title {
-      font-size: 20px;
-      font-weight: 800;
-      color: #0b4575;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* Category Hub Grid */
+    /* Category Hub Layout */
     .hub-header {
+      width: 100%;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 10px;
+      justify-content: center;
+      text-align: center;
+      gap: 14px;
+      margin-bottom: 26px;
     }
 
     .hub-header h2 {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 800;
       color: #0b4575;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.5px;
     }
 
+    .hub-subtitle {
+      font-size: 14px;
+      color: #1e4b70;
+      font-weight: 600;
+      margin-top: -6px;
+    }
+
+    /* Perfectly centered cards grid */
     .category-grid {
+      width: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-      margin-bottom: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 35px;
     }
 
     .category-card {
-      padding: 18px;
+      padding: 24px 22px;
       background: var(--aero-glass-card);
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      height: 150px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      border-radius: 16px;
     }
 
     .category-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(0, 60, 140, 0.35);
-    }
-
-    .category-card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 60, 140, 0.35);
     }
 
     .cat-name {
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 19px;
+      font-weight: 800;
       color: #09416f;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
     }
 
     .cat-badge {
       background: linear-gradient(180deg, #d8f1ff, #a5dbff);
       border: 1px solid #5aa1df;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-size: 12px;
       font-weight: 800;
       color: #0b4575;
-      white-space: nowrap;
+      display: inline-block;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
 
     .cat-desc {
-      font-size: 13px;
-      color: #2e5170;
-      margin-top: 8px;
-      line-height: 1.35;
-      flex: 1;
+      font-size: 13.5px;
+      color: #2b5273;
+      line-height: 1.45;
+      max-width: 90%;
     }
 
     .cat-footer {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       color: #0078d7;
-      text-align: right;
+      background: rgba(255, 255, 255, 0.65);
+      padding: 6px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
-    /* Composer */
-    .composer {
-      padding: 20px;
+    /* Sub-Chat Header / Top Bar */
+    .category-topbar {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
       margin-bottom: 24px;
+      padding: 18px 24px;
       background: var(--aero-glass-card);
+      border-radius: 16px;
     }
 
-    .composer h3 {
-      font-size: 15px;
-      margin-bottom: 12px;
+    .category-title {
+      font-size: 23px;
+      font-weight: 800;
       color: #0b4575;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
       display: flex;
       align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Composer */
+    .composer {
+      width: 100%;
+      padding: 22px 26px;
+      margin-bottom: 26px;
+      background: var(--aero-glass-card);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .composer h3 {
+      font-size: 16px;
+      margin-bottom: 14px;
+      color: #0b4575;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
+      text-align: center;
     }
 
     textarea {
       width: 100%;
-      height: 80px;
-      padding: 10px 14px;
-      border-radius: 8px;
+      max-width: 680px;
+      height: 85px;
+      padding: 12px 16px;
+      border-radius: 10px;
       border: 1px solid #7eaacb;
       background: rgba(255, 255, 255, 0.95);
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
@@ -532,19 +393,22 @@
     }
 
     .composer-toolbar {
+      width: 100%;
+      max-width: 680px;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      margin-top: 12px;
-      gap: 10px;
+      justify-content: center;
+      margin-top: 14px;
+      gap: 14px;
     }
 
     .composer-actions {
       display: flex;
       align-items: center;
+      justify-content: center;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
     }
 
     .checkbox-container {
@@ -554,9 +418,9 @@
       font-size: 12px;
       font-weight: 700;
       color: #15456f;
-      background: rgba(255, 255, 255, 0.7);
-      padding: 5px 12px;
-      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.75);
+      padding: 6px 14px;
+      border-radius: 18px;
       border: 1px solid rgba(255, 255, 255, 0.9);
       cursor: pointer;
       user-select: none;
@@ -564,11 +428,11 @@
 
     .emoji-tray {
       display: flex;
-      gap: 2px;
-      background: rgba(255, 255, 255, 0.75);
-      padding: 3px 6px;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.9);
+      gap: 3px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 4px 8px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.95);
     }
 
     .emoji-btn {
@@ -593,8 +457,8 @@
 
     .img-preview {
       max-height: 120px;
-      max-width: 200px;
-      border-radius: 6px;
+      max-width: 220px;
+      border-radius: 8px;
       border: 2px solid #ffffff;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       display: block;
@@ -620,32 +484,34 @@
 
     /* Feed & Post Cards */
     .feed {
+      width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 22px;
     }
 
     .post-card {
-      padding: 18px 20px;
+      padding: 22px 24px;
       background: var(--aero-glass-card);
+      border-radius: 16px;
     }
 
     .post-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .author-info {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .avatar {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       background: linear-gradient(135deg, #d3efff, #7dc1fb);
       border: 2px solid #ffffff;
@@ -697,7 +563,7 @@
 
     .post-content {
       font-size: 15px;
-      line-height: 1.5;
+      line-height: 1.55;
       color: #1a2f42;
       margin-bottom: 14px;
       white-space: pre-wrap;
@@ -718,16 +584,16 @@
     .post-actions {
       display: flex;
       gap: 12px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.6);
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.65);
       align-items: center;
     }
 
     .action-btn {
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      padding: 5px 13px;
+      border-radius: 16px;
+      padding: 6px 14px;
       font-size: 13px;
       font-weight: 700;
       color: #124b79;
@@ -736,7 +602,7 @@
       align-items: center;
       gap: 6px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-      transition: all 0.15s ease;
+      transition: all 0.14s ease;
     }
 
     .action-btn:hover {
@@ -751,18 +617,18 @@
     }
 
     .comments-section {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px dashed rgba(255, 255, 255, 0.7);
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.75);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .comment-item {
-      background: rgba(255, 255, 255, 0.7);
-      padding: 8px 12px;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.75);
+      padding: 8px 14px;
+      border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.9);
       font-size: 13px;
     }
@@ -780,10 +646,10 @@
 
     .comment-input {
       flex: 1;
-      padding: 6px 12px;
-      border-radius: 15px;
+      padding: 8px 14px;
+      border-radius: 16px;
       border: 1px solid #7eaacb;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       font-size: 13px;
       outline: none;
     }
@@ -808,17 +674,17 @@
 
     .modal-window {
       width: 100%;
-      max-width: 390px;
+      max-width: 400px;
       background: var(--aero-glass-card);
       border: 2px solid rgba(255, 255, 255, 0.9);
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 16px 45px rgba(0, 20, 50, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.95);
       overflow: hidden;
     }
 
     .modal-titlebar {
       background: linear-gradient(to bottom, #dcefff 0%, #a4d5ff 48%, #7ebfff 52%, #4fa4ff 100%);
-      padding: 8px 14px;
+      padding: 9px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -845,10 +711,10 @@
     }
 
     .modal-body {
-      padding: 18px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 13px;
+      gap: 14px;
     }
 
     .modal-body label {
@@ -862,8 +728,8 @@
     .modal-body input[type="text"],
     .modal-body input[type="password"] {
       width: 100%;
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 9px 12px;
+      border-radius: 8px;
       border: 1px solid #7eaacb;
       background: #ffffff;
       font-size: 14px;
@@ -958,13 +824,15 @@
     <!-- VIEW 1: CATEGORY HUB (Main Page) -->
     <section id="hubView">
       <div class="hub-header">
-        <h2>Sub-Chats & Mother Posts</h2>
-        <button class="btn-aero" onclick="openCreateCategoryModal()">
-          ➕ New Sub-Chat
+        <h2>Sub-Chats & Mother Boards</h2>
+        <div class="hub-subtitle">Choose a category to view posts or start a discussion</div>
+        <button class="btn-aero" onclick="openCreateCategoryModal()" style="margin-top: 4px;">
+          ➕ New Sub-Chat Board
         </button>
       </div>
+
       <div class="category-grid" id="categoryGrid">
-        <!-- Rendered by JS -->
+        <!-- Centered category cards rendered by JS -->
       </div>
     </section>
 
@@ -980,7 +848,7 @@
         </button>
       </div>
 
-      <!-- Post Composer for this Category -->
+      <!-- Centered Composer for this Category -->
       <section class="glass-panel composer">
         <h3><span>💬</span> Post in this sub-chat:</h3>
         <textarea id="postText" placeholder="Write something nostalgic, cool, or random..."></textarea>
@@ -1046,7 +914,7 @@
           <input type="password" id="authPassword" placeholder="••••••••">
         </div>
 
-        <p style="font-size: 11px; color: #436685;">* Only username and password required. No email or phone needed.</p>
+        <p style="font-size: 11px; color: #436685; text-align: center;">* Only username and password required. No email or phone needed.</p>
 
         <button class="btn-aero" id="authSubmitBtn" onclick="handleAuthSubmit()">
           Log In
@@ -1055,16 +923,16 @@
     </div>
   </div>
 
-  <!-- Create Sub-Chat / Mother Post Modal -->
+  <!-- Create Sub-Chat Modal -->
   <div class="modal-overlay" id="categoryModal">
     <div class="modal-window">
       <div class="modal-titlebar">
-        <span>Create New Sub-Chat</span>
+        <span>Create New Sub-Chat Board</span>
         <button class="modal-close" onclick="closeCreateCategoryModal()">✕</button>
       </div>
       <div class="modal-body">
         <div>
-          <label for="newCatTitle">Sub-Chat Name</label>
+          <label for="newCatTitle">Board Name</label>
           <input type="text" id="newCatTitle" placeholder="e.g. 🎮 Gaming & Emulators" maxlength="35">
         </div>
 
@@ -1074,7 +942,7 @@
         </div>
 
         <button class="btn-aero" onclick="handleCreateCategory()" style="margin-top: 5px;">
-          ✦ Create Sub-Chat
+          ✦ Create Sub-Chat Board
         </button>
       </div>
     </div>
@@ -1088,13 +956,13 @@
         <button class="modal-close" onclick="closeCodeModal()">✕</button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 13px; line-height: 1.4; color: #103b60;">
+        <p style="font-size: 13px; line-height: 1.4; color: #103b60; text-align: center;">
           Welcome to Aerotalk! Below is your <strong>Secret Recovery Code</strong>. You will need this code whenever you want to change your password in the future:
         </p>
         <div class="code-callout">
           <div class="code-display" id="generatedCodeDisplay">AERO-0000</div>
         </div>
-        <p style="font-size: 11px; color: #d03030; font-weight: 600;">
+        <p style="font-size: 11px; color: #d03030; font-weight: 600; text-align: center;">
           ⚠️ Write this code down or copy it now. It cannot be recovered without an email!
         </p>
         <button class="btn-aero" onclick="closeCodeModal()">Got it, continue to Aerotalk</button>
@@ -1153,19 +1021,17 @@ const firebaseConfig = {
   measurementId: "G-ZF4SL9G1QB"
 };
 
-// Initialize Firebase
-
-    // Safe memory storage fallback
+    // Memory storage fallback
     const memStore = {};
     function getItem(k) { try { return localStorage.getItem(k); } catch(e) { return memStore[k] || null; } }
     function setItem(k, v) { try { localStorage.setItem(k, v); } catch(e) { memStore[k] = v; } }
     function removeItem(k) { try { localStorage.removeItem(k); } catch(e) { delete memStore[k]; } }
 
-    const STORAGE_KEY_SESSION = "aerotalk_active_user_v4";
-    const STORAGE_KEY_ANON_ID = "aerotalk_anon_id_v4";
-    const STORAGE_KEY_LOCAL_POSTS = "aerotalk_local_posts_v4";
-    const STORAGE_KEY_LOCAL_USERS = "aerotalk_local_users_v4";
-    const STORAGE_KEY_LOCAL_CATS = "aerotalk_local_cats_v4";
+    const STORAGE_KEY_SESSION = "aerotalk_active_user_v5";
+    const STORAGE_KEY_ANON_ID = "aerotalk_anon_id_v5";
+    const STORAGE_KEY_LOCAL_POSTS = "aerotalk_local_posts_v5";
+    const STORAGE_KEY_LOCAL_USERS = "aerotalk_local_users_v5";
+    const STORAGE_KEY_LOCAL_CATS = "aerotalk_local_cats_v5";
 
     let anonGuestId = getItem(STORAGE_KEY_ANON_ID);
     if (!anonGuestId) {
@@ -1178,9 +1044,9 @@ const firebaseConfig = {
     let pendingPostImage = null;
     let pendingAvatarImage = null;
 
-    // Default Seed Categories
+    // Seed Boards
     const DEFAULT_CATEGORIES = [
-      { id: "lobby", name: "🌐 Aero Lobby", desc: "General chat, greetings, and introductions for everyone." },
+      { id: "lobby", name: "🌐 Aero Lobby", desc: "General chat, greetings, and open discussions for everyone." },
       { id: "retro", name: "💿 2010s Retro & Tech", desc: "Windows 7, MSN Messenger, iPods, and nostalgic tech talk." },
       { id: "music", name: "🎧 Music Lounge", desc: "Share your favorite songs, electronic beats, and 2012 tunes." },
       { id: "confessions", name: "💭 Random Thoughts", desc: "Anonymous confessions, shower thoughts, and late-night banter." }
@@ -1245,10 +1111,10 @@ const firebaseConfig = {
       reader.readAsDataURL(file);
     }
 
-    // --- Navigation (Hub vs Sub-Chat) ---
+    // --- Navigation ---
     window.navigateHome = function() {
       activeCategoryId = null;
-      document.getElementById("hubView").style.display = "block";
+      document.getElementById("hubView").style.display = "flex";
       document.getElementById("subChatView").style.display = "none";
       renderCategories();
     };
@@ -1258,32 +1124,29 @@ const firebaseConfig = {
       const cat = liveCategories.find(c => c.id === catId);
       document.getElementById("activeCategoryTitle").innerText = cat ? cat.name : "Sub-Chat";
       document.getElementById("hubView").style.display = "none";
-      document.getElementById("subChatView").style.display = "block";
+      document.getElementById("subChatView").style.display = "flex";
       renderFeed();
     };
 
-    // --- Render Category Hub Cards ---
+    // --- Render Category Hub (Centered) ---
     function renderCategories() {
       const grid = document.getElementById("categoryGrid");
       if (!grid) return;
 
       grid.innerHTML = liveCategories.map(cat => {
-        // Count how many posts belong to this category
         const count = livePosts.filter(p => (p.categoryId || "lobby") === cat.id).length;
         return `
           <div class="glass-panel category-card" onclick="openCategory('${cat.id}')">
-            <div class="category-card-top">
-              <div class="cat-name">${escapeHTML(cat.name)}</div>
-              <span class="cat-badge">${count} ${count === 1 ? 'post' : 'posts'}</span>
-            </div>
+            <div class="cat-name">${escapeHTML(cat.name)}</div>
+            <span class="cat-badge">💬 ${count} ${count === 1 ? 'post' : 'posts'}</span>
             <div class="cat-desc">${escapeHTML(cat.desc || '')}</div>
-            <div class="cat-footer">Enter Sub-Chat ➔</div>
+            <div class="cat-footer">Enter Sub-Chat Board ➔</div>
           </div>
         `;
       }).join("");
     }
 
-    // --- Render Nav User Bar ---
+    // --- Render User Bar ---
     window.renderUserBar = function() {
       const userBar = document.getElementById("userBar");
       if (!userBar) return;
@@ -1309,17 +1172,13 @@ const firebaseConfig = {
       if (!feedContainer || !activeCategoryId) return;
 
       const viewerId = getViewerId();
-
-      // Filter posts that belong to the active category (defaulting older posts to 'lobby')
       const catPosts = livePosts.filter(p => (p.categoryId || "lobby") === activeCategoryId);
-      
-      // Sort newest at top, oldest at bottom
       const sorted = [...catPosts].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
       if (sorted.length === 0) {
         feedContainer.innerHTML = `
-          <div class="glass-panel post-card" style="text-align: center; color: #1e4569;">
-            This sub-chat is empty! Be the first to publish a post in this category.
+          <div class="glass-panel post-card" style="text-align: center; color: #1e4569; padding: 30px;">
+            This board is quiet right now. Be the first to start the conversation!
           </div>`;
         return;
       }
@@ -1419,7 +1278,7 @@ const firebaseConfig = {
       }
     };
 
-    // --- Image Handling ---
+    // --- Image Selection ---
     window.handleImageSelected = function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1437,7 +1296,7 @@ const firebaseConfig = {
       document.getElementById("imgPreviewWrapper").style.display = "none";
     };
 
-    // --- Publishing Post to Active Category ---
+    // --- Submit Post ---
     window.submitPost = async function() {
       const textEl = document.getElementById("postText");
       const text = textEl ? textEl.value.trim() : "";
@@ -1512,7 +1371,7 @@ const firebaseConfig = {
       }
     };
 
-    // --- Category Creation ("Mother Post") ---
+    // --- Create Category Board ---
     window.openCreateCategoryModal = function() {
       document.getElementById("newCatTitle").value = "";
       document.getElementById("newCatDesc").value = "";
@@ -1540,7 +1399,7 @@ const firebaseConfig = {
         try {
           await db.collection("categories").doc(id).set(newCat);
         } catch (err) {
-          alert("Error creating category in cloud: " + err.message);
+          alert("Error creating board in cloud: " + err.message);
           return;
         }
       } else {
@@ -1719,7 +1578,6 @@ const firebaseConfig = {
     function init() {
       renderUserBar();
 
-      // Load local cache first
       try {
         const storedCats = getItem(STORAGE_KEY_LOCAL_CATS);
         liveCategories = storedCats ? JSON.parse(storedCats) : [...DEFAULT_CATEGORIES];
@@ -1771,7 +1629,6 @@ const firebaseConfig = {
           snapshot => {
             if (!snapshot.empty) {
               const cloudCats = snapshot.docs.map(doc => doc.data());
-              // Merge default categories with custom cloud categories
               const mergedMap = new Map();
               DEFAULT_CATEGORIES.forEach(c => mergedMap.set(c.id, c));
               cloudCats.forEach(c => mergedMap.set(c.id, c));
