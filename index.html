@@ -16,7 +16,7 @@
     });
   </script>
 
-  <!-- Firebase Compat SDKs (No import syntax needed) -->
+  <!-- Firebase Compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
@@ -44,7 +44,7 @@
                   linear-gradient(135deg, #1875cd 0%, #37bfe7 35%, #6cd195 75%, #a0eb64 100%);
       background-attachment: fixed;
       color: var(--aero-text);
-      padding-bottom: 70px;
+      padding-bottom: 50px;
     }
 
     .glass-panel {
@@ -74,7 +74,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      margin-bottom: 28px;
+      margin-bottom: 25px;
       padding: 12px 0;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(210, 240, 255, 0.50) 100%);
       backdrop-filter: blur(20px);
@@ -147,6 +147,42 @@
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     }
 
+    /* Aero Audio Player Widget */
+    .aero-music-player {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      padding: 4px 12px;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(0, 60, 120, 0.15);
+    }
+
+    .music-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #0d4775;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .music-btn {
+      background: linear-gradient(180deg, #ffffff 0%, #b8defc 100%);
+      border: 1px solid #5aa1df;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 11px;
+      color: #093c66;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
     .user-bar {
       display: flex;
       align-items: center;
@@ -194,7 +230,7 @@
       color: #630c0c;
     }
 
-    /* Centered Layout Wrapper */
+    /* Centered Layout */
     .container {
       max-width: 800px;
       margin: 0 auto;
@@ -226,7 +262,7 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
-    /* Category Hub Layout */
+    /* Hub View */
     .hub-header {
       width: 100%;
       display: flex;
@@ -234,7 +270,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 14px;
+      gap: 12px;
       margin-bottom: 26px;
     }
 
@@ -250,10 +286,9 @@
       font-size: 14px;
       color: #1e4b70;
       font-weight: 600;
-      margin-top: -6px;
+      margin-top: -4px;
     }
 
-    /* Perfectly centered cards grid */
     .category-grid {
       width: 100%;
       display: grid;
@@ -322,7 +357,7 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
-    /* Sub-Chat Header / Top Bar */
+    /* Sub-Chat Header */
     .category-topbar {
       width: 100%;
       display: flex;
@@ -654,6 +689,26 @@
       outline: none;
     }
 
+    /* Credits Slip */
+    .credits-slip {
+      margin-top: 40px;
+      padding: 14px 24px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0b426e;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 40, 90, 0.15);
+      letter-spacing: 0.3px;
+    }
+
+    .credits-slip strong {
+      color: #005a9e;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
     /* Windows / Modals */
     .modal-overlay {
       position: fixed;
@@ -789,6 +844,11 @@
 </head>
 <body>
 
+  <!-- Audio Element: Children by Robert Miles -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://ia800905.us.archive.org/19/items/robert-miles-children-dream-version_202106/Robert%20Miles%20-%20Children%20%28Dream%20Version%29.mp3" type="audio/mpeg">
+  </audio>
+
   <!-- Header -->
   <header>
     <div class="nav-container">
@@ -808,6 +868,12 @@
           Aerotalk
           <span class="status-badge" id="connectionBadge">Ready</span>
         </div>
+      </div>
+
+      <!-- Music Bar Player -->
+      <div class="aero-music-player">
+        <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()" title="Play/Pause Background Music">▶</button>
+        <span class="music-title">🎵 "Children" - Robert Miles</span>
       </div>
 
       <div class="user-bar" id="userBar">
@@ -832,13 +898,12 @@
       </div>
 
       <div class="category-grid" id="categoryGrid">
-        <!-- Centered category cards rendered by JS -->
+        <!-- Rendered by JS -->
       </div>
     </section>
 
     <!-- VIEW 2: SUB-CHAT FEED (Inside a Category) -->
     <section id="subChatView" style="display: none;">
-      <!-- Category Header Bar with Back Button -->
       <div class="glass-panel category-topbar">
         <div class="category-title" id="activeCategoryTitle">
           🌐 Lobby
@@ -848,7 +913,7 @@
         </button>
       </div>
 
-      <!-- Centered Composer for this Category -->
+      <!-- Composer for this Category -->
       <section class="glass-panel composer">
         <h3><span>💬</span> Post in this sub-chat:</h3>
         <textarea id="postText" placeholder="Write something nostalgic, cool, or random..."></textarea>
@@ -889,6 +954,11 @@
       <!-- Category Posts (Newest at top, oldest at bottom) -->
       <section class="feed" id="feedContainer"></section>
     </section>
+
+    <!-- CREDITS SLIP AT THE END OF THE PAGE -->
+    <footer class="credits-slip glass-panel">
+      ✦ Made by <strong>Yashvardhan Bhaskar</strong> with profound help from <strong>Gemini</strong> ✦
+    </footer>
   </main>
 
   <!-- Login/Register Modal -->
@@ -1010,7 +1080,7 @@
   </div>
 
   <script>
-
+  
 const firebaseConfig = {
   apiKey: "AIzaSyAU0BHEbtm7kmI3_mFbc1p6nLJuzy1LBec",
   authDomain: "aerotalk-1.firebaseapp.com",
@@ -1021,17 +1091,18 @@ const firebaseConfig = {
   measurementId: "G-ZF4SL9G1QB"
 };
 
-    // Memory storage fallback
+    // Safe memory storage fallback
     const memStore = {};
     function getItem(k) { try { return localStorage.getItem(k); } catch(e) { return memStore[k] || null; } }
     function setItem(k, v) { try { localStorage.setItem(k, v); } catch(e) { memStore[k] = v; } }
     function removeItem(k) { try { localStorage.removeItem(k); } catch(e) { delete memStore[k]; } }
 
-    const STORAGE_KEY_SESSION = "aerotalk_active_user_v5";
-    const STORAGE_KEY_ANON_ID = "aerotalk_anon_id_v5";
-    const STORAGE_KEY_LOCAL_POSTS = "aerotalk_local_posts_v5";
-    const STORAGE_KEY_LOCAL_USERS = "aerotalk_local_users_v5";
-    const STORAGE_KEY_LOCAL_CATS = "aerotalk_local_cats_v5";
+    const STORAGE_KEY_SESSION = "aerotalk_active_user_v6";
+    const STORAGE_KEY_ANON_ID = "aerotalk_anon_id_v6";
+    const STORAGE_KEY_LOCAL_POSTS = "aerotalk_local_posts_v6";
+    const STORAGE_KEY_LOCAL_USERS = "aerotalk_local_users_v6";
+    const STORAGE_KEY_LOCAL_CATS = "aerotalk_local_cats_v6";
+    const STORAGE_KEY_SPAM_HISTORY = "aerotalk_spam_timestamps";
 
     let anonGuestId = getItem(STORAGE_KEY_ANON_ID);
     if (!anonGuestId) {
@@ -1057,6 +1128,52 @@ const firebaseConfig = {
     let liveUsers = {};
     let activeCategoryId = null;
     let db = null;
+
+    // --- Audio Player Controller ---
+    window.toggleMusic = function() {
+      const audio = document.getElementById("bgMusic");
+      const btn = document.getElementById("musicToggleBtn");
+      if (audio.paused) {
+        audio.play().then(() => {
+          btn.innerText = "⏸";
+        }).catch(err => {
+          alert("Audio playback was blocked by the browser. Please interact with the page first.");
+        });
+      } else {
+        audio.pause();
+        btn.innerText = "▶";
+      }
+    };
+
+    // --- SPAM PROTECTION RATE LIMITER ---
+    // Rule: Cannot post or comment more than 3 times in 40 seconds
+    const SPAM_MAX_ACTIONS = 3;
+    const SPAM_WINDOW_MS = 40 * 1000;
+
+    function checkSpamProtection() {
+      const now = Date.now();
+      let history = [];
+      try {
+        history = JSON.parse(getItem(STORAGE_KEY_SPAM_HISTORY) || "[]");
+      } catch(e) {
+        history = [];
+      }
+
+      // Filter out actions older than 40 seconds
+      history = history.filter(ts => (now - ts) < SPAM_WINDOW_MS);
+
+      if (history.length >= SPAM_MAX_ACTIONS) {
+        const oldestAction = history[0];
+        const waitRemaining = Math.ceil((oldestAction + SPAM_WINDOW_MS - now) / 1000);
+        alert(`⚠️ Spam Protection: You can only post or comment 3 times every 40 seconds.\n\nPlease wait ${waitRemaining} second(s) before trying again.`);
+        return false;
+      }
+
+      // Record this action timestamp
+      history.push(now);
+      setItem(STORAGE_KEY_SPAM_HISTORY, JSON.stringify(history));
+      return true;
+    }
 
     // --- Helpers ---
     window.insertEmoji = function(emoji) {
@@ -1128,7 +1245,7 @@ const firebaseConfig = {
       renderFeed();
     };
 
-    // --- Render Category Hub (Centered) ---
+    // --- Render Hub (Centered) ---
     function renderCategories() {
       const grid = document.getElementById("categoryGrid");
       if (!grid) return;
@@ -1146,7 +1263,7 @@ const firebaseConfig = {
       }).join("");
     }
 
-    // --- Render User Bar ---
+    // --- Render Nav User Bar ---
     window.renderUserBar = function() {
       const userBar = document.getElementById("userBar");
       if (!userBar) return;
@@ -1296,7 +1413,7 @@ const firebaseConfig = {
       document.getElementById("imgPreviewWrapper").style.display = "none";
     };
 
-    // --- Submit Post ---
+    // --- Submit Post (With Spam Protection) ---
     window.submitPost = async function() {
       const textEl = document.getElementById("postText");
       const text = textEl ? textEl.value.trim() : "";
@@ -1304,6 +1421,11 @@ const firebaseConfig = {
 
       if (!text && !pendingPostImage) {
         alert("Please write some text or attach an image before publishing.");
+        return;
+      }
+
+      // Check Rate Limit (3 actions per 40s)
+      if (!checkSpamProtection()) {
         return;
       }
 
@@ -1344,11 +1466,16 @@ const firebaseConfig = {
       }
     };
 
-    // --- Comment Submission ---
+    // --- Comment Submission (With Spam Protection) ---
     window.submitComment = async function(postId) {
       const input = document.getElementById(`comment-input-${postId}`);
       const text = input ? input.value.trim() : "";
       if (!text) return;
+
+      // Check Rate Limit (3 actions per 40s)
+      if (!checkSpamProtection()) {
+        return;
+      }
 
       const author = currentUser ? currentUser : "Anonymous";
       const post = livePosts.find(p => String(p.id) === String(postId));
