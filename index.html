@@ -844,11 +844,12 @@
 </head>
 <body>
 
-  <!-- Audio Element: Local children.mp3 first, Archive.org as backup -->
-  <audio id="bgMusic" loop preload="auto">
-    <source src="children.mp3" type="audio/mpeg">
-    <source src="https://ia800905.us.archive.org/19/items/robert-miles-children-dream-version_202106/Robert%20Miles%20-%20Children%20%28Dream%20Version%29.mp3" type="audio/mpeg">
-  </audio>
+ 
+ <!-- Invisible Audio Player Stream -->
+  <div id="ytAudioContainer" style="position: absolute; left: -9999px; width: 1px; height: 1px;">
+    <div id="ytPlayer"></div>
+  </div>
+  <script src="https://www.youtube.com/iframe_api"></script>
   <!-- Header -->
   <header>
     <div class="nav-container">
@@ -1129,26 +1130,39 @@ const firebaseConfig = {
     let activeCategoryId = null;
     let db = null;
 
-   // --- Audio Player Controller ---
-    window.toggleMusic = function() {
-      const audio = document.getElementById("bgMusic");
-      const btn = document.getElementById("musicToggleBtn");
-      if (!audio) return;
+// --- Background Music Player (Robert Miles - Children) ---
+    let ytPlayer = null;
+    let isMusicPlaying = false;
 
-      if (audio.paused) {
-        audio.play().then(() => {
-          btn.innerText = "⏸";
-        }).catch(err => {
-          console.error("Audio playback error:", err);
-          if (audio.error) {
-            alert("The audio file could not be loaded from the external link.\n\nTo fix this: Upload a file named 'children.mp3' directly into your GitHub repository alongside index.html.");
-          } else {
-            alert("Could not start audio: " + err.message);
-          }
-        });
+    window.onYouTubeIframeAPIReady = function() {
+      ytPlayer = new YT.Player('ytPlayer', {
+        height: '1',
+        width: '1',
+        videoId: 'CC5ca6Hsb2Q', // Robert Miles - Children
+        playerVars: {
+          'autoplay': 0,
+          'controls': 0,
+          'loop': 1,
+          'playlist': 'CC5ca6Hsb2Q'
+        }
+      });
+    };
+
+    window.toggleMusic = function() {
+      const btn = document.getElementById("musicToggleBtn");
+      if (!ytPlayer || !ytPlayer.playVideo) {
+        alert("Audio player is still loading. Please try again in 2 seconds.");
+        return;
+      }
+
+      if (!isMusicPlaying) {
+        ytPlayer.playVideo();
+        btn.innerText = "⏸";
+        isMusicPlaying = true;
       } else {
-        audio.pause();
+        ytPlayer.pauseVideo();
         btn.innerText = "▶";
+        isMusicPlaying = false;
       }
     };
     // --- SPAM PROTECTION RATE LIMITER ---
