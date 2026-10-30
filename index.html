@@ -845,7 +845,7 @@
 <body>
 
  
- <!-- Invisible Audio Player Stream -->
+<!-- Hidden Stream for "Children" by Alex-Productions -->
   <div id="ytAudioContainer" style="position: absolute; left: -9999px; width: 1px; height: 1px;">
     <div id="ytPlayer"></div>
   </div>
@@ -871,11 +871,11 @@
         </div>
       </div>
 
-      <!-- Music Bar Player -->
-      <div class="aero-music-player">
-        <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()" title="Play/Pause Background Music">▶</button>
-        <span class="music-title">🎵 "Children" - Robert Miles</span>
-      </div>
+     <!-- Music Bar Player -->
+  <div class="aero-music-player">
+    <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()" title="Play/Pause Background Music">▶</button>
+    <span class="music-title">🎵 "Children" - Alex-Productions</span>
+  </div>
 
       <div class="user-bar" id="userBar">
         <span>Browsing as Guest</span>
@@ -1130,7 +1130,7 @@ const firebaseConfig = {
     let activeCategoryId = null;
     let db = null;
 
-// --- Background Music Player (Robert Miles - Children) ---
+// --- Audio Player Controller (Royalty-Free "Children" by Alex-Productions) ---
     let ytPlayer = null;
     let isMusicPlaying = false;
 
@@ -1138,12 +1138,12 @@ const firebaseConfig = {
       ytPlayer = new YT.Player('ytPlayer', {
         height: '1',
         width: '1',
-        videoId: 'CC5ca6Hsb2Q', // Robert Miles - Children
+        videoId: 'Gg78Z9vWbiA', // "Children" - Alex-Productions
         playerVars: {
           'autoplay': 0,
           'controls': 0,
           'loop': 1,
-          'playlist': 'CC5ca6Hsb2Q'
+          'playlist': 'Gg78Z9vWbiA'
         }
       });
     };
@@ -1151,7 +1151,7 @@ const firebaseConfig = {
     window.toggleMusic = function() {
       const btn = document.getElementById("musicToggleBtn");
       if (!ytPlayer || !ytPlayer.playVideo) {
-        alert("Audio player is still loading. Please try again in 2 seconds.");
+        alert("Audio player is loading. Please tap again in a moment.");
         return;
       }
 
